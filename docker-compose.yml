@@ -41,7 +41,7 @@ services:
   # ASP.NET Core приложение
   nbsite:
     build:
-      context: ./NBSite          # путь к папке с проектом
+      context: .          # путь к папке с проектом
       dockerfile: Dockerfile
     container_name: nbsite
     networks:
