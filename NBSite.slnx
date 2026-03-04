@@ -3,6 +3,8 @@
     <File Path=".env" />
     <File Path="Dockerfile" />
     <File Path="nginx.conf" />
+    <File Path="run_exporter.sh" />
+    <File Path="run_importer.sh" />
   </Folder>
   <Project Path="docker-compose.dcproj">
     <Build />
