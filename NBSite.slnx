@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Элементы решения/">
     <File Path=".env" />
+    <File Path="Dockerfile" />
     <File Path="nginx.conf" />
   </Folder>
   <Project Path="docker-compose.dcproj">
