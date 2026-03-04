@@ -6,7 +6,7 @@
 # ============================================
 
 # Путь к опубликованному приложению
-APP_DIR="/root/NBSite\Importer\bin\Debug\net10.0"
+APP_DIR="/root/NBSite/Importer/bin/Debug/net10.0"
 APP_DLL="Importer.dll"
 
 # Директория для логов

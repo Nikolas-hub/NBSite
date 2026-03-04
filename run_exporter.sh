@@ -5,7 +5,7 @@
 # Логи: /var/log/nbsite/exporter_YYYYMMDD.log
 # ============================================
 
-APP_DIR="/root/NBSite\Exporter\bin\Debug\net10.0"
+APP_DIR="/root/NBSite/Exporter/bin/Debug/net10.0"
 APP_DLL="Exporter.dll"
 LOG_DIR="/var/log/nbsite"
 LOG_FILE="$LOG_DIR/exporter_$(date +\%Y\%m\%d).log"
