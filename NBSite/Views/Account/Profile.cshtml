@@ -1,0 +1,89 @@
+﻿@model UserProfileViewModel
+@{
+    ViewData["Title"] = "Мой профиль";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <h1 class="mb-4">@ViewData["Title"]</h1>
+
+            @if (ViewBag.SuccessMessage != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @ViewBag.SuccessMessage
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <form asp-action="Profile" method="post">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-control" readonly />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Username" class="form-label"></label>
+                    <input asp-for="Username" class="form-control" readonly />
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="FirstName" class="form-label"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="LastName" class="form-label"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Phone" class="form-label"></label>
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Company" class="form-label"></label>
+                    <input asp-for="Company" class="form-control" />
+                    <span asp-validation-for="Company" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CompanyPost" class="form-label"></label>
+                    <input asp-for="CompanyPost" class="form-control" />
+                    <span asp-validation-for="CompanyPost" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Fio" class="form-label"></label>
+                    <input asp-for="Fio" class="form-control" />
+                    <span asp-validation-for="Fio" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CityId" class="form-label"></label>
+                    <select asp-for="CityId" class="form-select" asp-items="@(new SelectList(ViewBag.Cities, "Id", "Name", Model.CityId))">
+                        <option value="">-- Выберите город --</option>
+                    </select>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                    <a asp-action="ChangePassword" class="btn btn-outline-secondary">Сменить пароль</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("ValidationScriptsPartial");
+    }
+}

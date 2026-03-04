@@ -1,0 +1,276 @@
+﻿@model ContactsViewModel
+@{
+    ViewData["Title"] = "Контакты";
+}
+
+<!-- Подключаем стили, аналогичные headerPartial -->
+<style>
+    .contacts-section {
+        padding: 50px 0;
+        background-color: #f8f9fa;
+    }
+
+    .contacts-info {
+        background: white;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0,0,0,.1);
+        margin-bottom: 30px;
+    }
+
+        .contacts-info h3 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+    .contact-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .contact-icon {
+        width: 40px;
+        height: 40px;
+        background-color: #007bff;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 15px;
+        font-size: 18px;
+    }
+
+    .contact-text {
+        color: #666;
+        font-size: 16px;
+    }
+
+        .contact-text strong {
+            color: #333;
+        }
+
+    .manager-card {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0,0,0,.1);
+        text-align: center;
+        transition: transform 0.3s;
+    }
+
+        .manager-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .manager-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background-color: #007bff;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        font-size: 40px;
+        font-weight: bold;
+    }
+
+    .manager-name {
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .manager-position {
+        color: #007bff;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .manager-phone, .manager-email {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .callback-form {
+        background: white;
+        border-radius: 8px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0,0,0,.1);
+    }
+
+        .callback-form h3 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+    .form-control {
+        border: 2px solid #eaeaea;
+        border-radius: 25px;
+        padding: 10px 20px;
+        height: auto;
+        transition: border-color 0.3s;
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: none;
+        }
+
+    .btn-callback {
+        background-color: #007bff;
+        border: 2px solid #007bff;
+        border-radius: 25px;
+        color: white;
+        padding: 10px 30px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+        .btn-callback:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+    .map-container {
+        margin-top: 30px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0,0,0,.1);
+    }
+</style>
+
+<div class="contacts-section">
+    <div class="container">
+        <!-- Блок контактной информации и форма -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="contacts-info">
+                    <h3>Контактная информация</h3>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
+                        <div class="contact-text"><strong>Телефон:</strong> 8 (800) 123-45-67</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-clock"></i></div>
+                        <div class="contact-text"><strong>Режим работы:</strong> Пн-Пт: 9:00-19:00</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <div class="contact-text"><strong>Email:</strong> test@fronb.ru</div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="contact-text"><strong>Адрес:</strong> г. Екатеринбург, ул. Гурзуфская,55</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="callback-form">
+                    <h3>Заказать звонок</h3>
+                    <form id="callbackForm" method="post" action="@Url.Action("Callback", "Home")">
+                        @Html.AntiForgeryToken()
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="Name" placeholder="Ваше имя" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" class="form-control" name="Phone" placeholder="Телефон" required>
+                        </div>
+                        <button type="submit" class="btn btn-callback btn-block">Отправить</button>
+                        <div id="callbackMessage" class="mt-3"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Блок менеджеров (если есть) -->
+        @if (Model.Managers.Any())
+        {
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h3 class="text-center mb-4">Наши менеджеры</h3>
+                </div>
+                @foreach (var manager in Model.Managers)
+                {
+                    <div class="col-lg-3 col-md-6 mb-4">
+                        <div class="manager-card">
+                            <div class="manager-avatar">
+                                @(manager.FullName?.FirstOrDefault() ?? 'М')
+                            </div>
+                            <div class="manager-name">@manager.FullName</div>
+                            <div class="manager-position">@manager.Position</div>
+                            @if (!string.IsNullOrEmpty(manager.Phone))
+                            {
+                                <div class="manager-phone"><i class="fas fa-phone mr-1"></i>@manager.Phone</div>
+                            }
+                            @if (!string.IsNullOrEmpty(manager.Email))
+                            {
+                                <div class="manager-email"><i class="fas fa-envelope mr-1"></i>@manager.Email</div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        <!-- Карта (пример) -->
+        <div class="row">
+            <div class="col-12">
+
+                <div style="position:relative;overflow:hidden;"><a href="https://yandex.ru/maps/54/yekaterinburg/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Екатеринбург</a><a href="https://yandex.ru/maps/54/yekaterinburg/house/gurzufskaya_ulitsa_55/YkkYcwFjT0IGQFtsfXRzdHxqYA==/?ll=60.563729%2C56.824909&utm_medium=mapframe&utm_source=maps&z=17.53" style="color:#eee;font-size:12px;position:absolute;top:14px;">Гурзуфская улица, 55 — Яндекс Карты</a><iframe src="https://yandex.ru/map-widget/v1/?ll=60.563729%2C56.824909&mode=search&ol=geo&ouri=ymapsbm1%3A%2F%2Fgeo%3Fdata%3DCgg1NjA3OTIxMhJ00KDQvtGB0YHQuNGPLCDQodCy0LXRgNC00LvQvtCy0YHQutCw0Y8g0L7QsdC70LDRgdGC0YwsINCV0LrQsNGC0LXRgNC40L3QsdGD0YDQsywg0JPRg9GA0LfRg9GE0YHQutCw0Y8g0YPQu9C40YbQsCwgNTUiCg0yQXJCFeVMY0I%2C&z=17.53" width="100%" height="500" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#callbackForm').on('submit', function(e) {
+                e.preventDefault();
+                var form = $(this);
+                var url = form.attr('action');
+                var formData = form.serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: formData,
+                    dataType: 'json',
+                    success: function(response) {
+                        var messageDiv = $('#callbackMessage');
+                        if (response.status) {
+                            messageDiv.html('<div class="alert alert-success">' + response.message + '</div>');
+                            form[0].reset();
+                        } else {
+                            var errors = response.errors;
+                            var errorHtml = '<div class="alert alert-danger"><ul>';
+                            for (var field in errors) {
+                                errors[field].forEach(function(err) {
+                                    errorHtml += '<li>' + err + '</li>';
+                                });
+                            }
+                            errorHtml += '</ul></div>';
+                            messageDiv.html(errorHtml);
+                        }
+                    },
+                    error: function() {
+                        $('#callbackMessage').html('<div class="alert alert-danger">Произошла ошибка при отправке. Попробуйте позже.</div>');
+                    }
+                });
+            });
+        });
+    </script>
+}

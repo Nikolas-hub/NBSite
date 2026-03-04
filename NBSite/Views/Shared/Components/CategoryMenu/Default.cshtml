@@ -1,0 +1,27 @@
+﻿@model IEnumerable<CategoryMenuDto>
+
+@foreach (var category in Model)
+{
+    if (category.Children != null && category.Children.Any())
+    {
+        <div class="dropdown-submenu dropright">
+            <a class="dropdown-item dropdown-toggle" href="@Url.Action("ShowProducts", "Shopping", new { categoryAlias = category.Alias })">
+                @category.Name
+            </a>
+            <div class="dropdown-menu">
+                @foreach (var child in category.Children)
+                {
+                    <a class="dropdown-item" href="@Url.Action("ShowProducts", "Shopping", new { categoryAlias = child.Alias })">
+                        @(child.Name!.Length > 30 ? child.Name.Substring(0, 30) + "…" : child.Name)
+                    </a>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <a class="dropdown-item" href="@Url.Action("ShowProducts", "Shopping", new { categoryAlias = category.Alias })">
+            @category.Name
+        </a>
+    }
+}

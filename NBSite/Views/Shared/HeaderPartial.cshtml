@@ -1,0 +1,707 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using System.Security.Claims
+@using Domain.Entities
+
+
+@{
+    string currentController = ViewContext.RouteData.Values["controller"]?.ToString()?.ToLower() ?? "";
+    string currentAction = ViewContext.RouteData.Values["action"]?.ToString()?.ToLower() ?? "";
+    string currentPath = Context.Request.Path.ToString().ToLower();
+}
+<div class="mobile-header-section d-block d-lg-none">
+    <div class="mobile-header-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-between align-items-center">
+                    <div class="mobile-header--left">
+                        <a href="/Home/Index" class="mobile-logo-link">
+                            <img src="~/img/logo/logo_2026.png" alt="Логотип магазина" class="mobile-logo-img">
+                        </a>
+                    </div>
+                    <div class="mobile-header--right d-flex align-items-center">
+                        @if (User.Identity!.IsAuthenticated)
+                        {
+                            <a href="/Shopping/ShowBasket" class="mobile-cart-icon mr-20">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="cart-count-badge">0</span>
+                            </a>
+                        }
+                        <a href="#mobile-menu-offcanvas" class="mobile-menu offcanvas-toggle">
+                            <span class="mobile-menu-dash"></span>
+                            <span class="mobile-menu-dash"></span>
+                            <span class="mobile-menu-dash"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<header class="header-section d-lg-block d-none">
+    <div class="header-top py-2">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="header-contact-info">
+                        <span class="mr-3">
+                            <i class="fas fa-phone-alt mr-1"></i>
+                            <a href="tel:@AppConfig.Company.CompanyPhoneShort">@AppConfig.Company.CompanyPhone</a>
+                        </span>
+                        <span class="mr-3">
+                            <i class="fas fa-envelope mr-1"></i>
+                            <a href="mailto:@AppConfig.Company.CompanyEmail">@AppConfig.Company.CompanyEmail</a>
+                        </span>
+                        <span class="mr-3">
+                            <i class="fab fa-telegram-plane mr-1"></i>
+                            <a href="@AppConfig.Company.CompanyTelegram" target="_blank" rel="noopener noreferrer">Telegram</a>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-6 text-right">
+                    <div class="header-links">
+                        <a href="/Home/About" class="mr-3">О компании</a>
+                        <a href="/Home/Delivery" class="mr-3">Доставка</a>
+                        <a href="/Home/HowToBuy" class="mr-3">Как купить?</a>
+                        <a href="/Home/Contacts" class="mr-3">Контакты</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-center py-3">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-3">
+                    <div class="header-logo">
+                        <a href="/Home/Index">
+                            <img src="~/img/logo/logo_2026.png" alt="Логотип магазина" class="img-fluid">
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="header-search">
+                        <form action="/Shopping/ShowProducts" method="get">
+                            <input type="hidden" name="sortOrder" value="@Context.Request.Query["sortOrder"]" />
+                            <input type="hidden" name="priceFilter" value="@Context.Request.Query["priceFilter"]" />
+                            <input type="hidden" name="inStock" value="@Context.Request.Query["inStock"]" />
+                            <div class="input-group">
+                                <input type="text" class="form-control search-input"
+                                       placeholder="Поиск товаров..."
+                                       name="query"
+                                       value="@Context.Request.Query["query"]"
+                                       aria-label="Поиск товаров">
+                                <div class="input-group-append">
+                                    <button class="btn btn-search" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="header-actions">
+                        <ul class="header-action-list">
+                            @* <li class="header-action-item">
+                                <a href="/Wishlist" class="header-action-link">
+                                    <div class="action-icon">
+                                        <i class="far fa-heart"></i>
+                                    </div>
+                                    <div class="action-text">
+                                        <span>Избранное</span>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li class="header-action-item">
+                                <a href="/Compare" class="header-action-link">
+                                    <div class="action-icon">
+                                        <i class="fas fa-exchange-alt"></i>
+                                    </div>
+                                    <div class="action-text">
+                                        <span>Сравнение</span>
+                                    </div>
+                                </a>
+                            </li> *@
+
+                                <li class="header-action-item">
+                                    <a href="/Shopping/ShowBasket" class="header-action-link cart-link">
+                                        <div class="action-icon">
+                                            <i class="fas fa-shopping-cart"></i>
+                                            <span class="cart-count"></span>
+                                        </div>
+                                        <div class="action-text">
+                                            <span>Корзина</span>
+                                            <small class="cart-total">0 ₽</small>
+                                        </div>
+                                    </a>
+                                </li>
+
+
+                            <li class="header-action-item">
+                                @if (!User.Identity!.IsAuthenticated)
+                                {
+                                    <a href="/Account/Login" class="header-action-link">
+                                        <div class="action-icon">
+                                            <i class="far fa-user"></i>
+                                        </div>
+                                        <div class="action-text">
+                                            <span>Войти / Регистрация</span>
+                                        </div>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <div class="dropdown">
+                                        <a href="#" class="header-action-link dropdown-toggle"
+                                           id="userDropdown"
+                                           data-toggle="dropdown"
+                                           aria-haspopup="true"
+                                           aria-expanded="false">
+                                            <div class="action-icon">
+                                                <i class="far fa-user"></i>
+                                            </div>
+                                            <div class="action-text">
+                                                @{
+                                                    var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value
+                                                    ?? User.Claims.FirstOrDefault(c => c.Type == "FirstName")?.Value
+                                                    ?? User.Identity?.Name
+                                                    ?? "Пользователь";
+                                                }
+                                                <span>@userNameClaim</span>
+                                            </div>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                                            @{
+                                                var isAdmin = User.Claims.Any(c => c.Type == ClaimTypes.Role && (c.Value == "admin" || c.Value == "superuser"))
+                                                || User.Claims.Any(c => c.Type == "IsStaff" && c.Value == "true");
+                                                var isSuperuser = User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "superuser")
+                                                || User.Claims.Any(c => c.Type == "IsSuperuser" && c.Value == "true");
+                                            }
+
+                                            @if (isAdmin || isSuperuser)
+                                            {
+                                                <a class="dropdown-item" href="/Admin">
+                                                    <i class="fas fa-cog mr-2"></i>Панель администратора
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <a class="dropdown-item" href="/Account/Profile">
+                                                    <i class="fas fa-user-circle mr-2"></i>Мой профиль
+                                                </a>
+                                            }
+
+                                            <a class="dropdown-item" href="/Shopping/OrderHistory">
+                                                <i class="fas fa-box mr-2"></i>Мои заказы
+                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                            <form id="logoutForm" method="post" asp-controller="Account" asp-action="Logout">
+                                                @Html.AntiForgeryToken()
+                                                <a class="dropdown-item logout-link" href="#">
+                                                    <i class="fas fa-sign-out-alt mr-2"></i>Выйти
+                                                </a>
+                                            </form>
+                                        </div>
+                                    </div>
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="header-bottom sticky-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="main-menu">
+                        <nav>
+                            <ul class="main-menu-list">
+                                <li>
+                                    <a href="/Home/Index" class="@(currentController == "home" && currentAction == "index" ? "active" : "")">
+                                        <i class="fas fa-home mr-1"></i>Главная
+                                    </a>
+                                </li>
+                                <li class="nav-item dropdown position-static">
+                                    <a href="/Shopping/ShowProducts" class="@(currentController == "shopping" ? "active" : "")">
+                                        <i class="fas fa-th-large mr-1"></i>Каталог товаров <i class="fas fa-chevron-down ml-1"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-left p-0 m-0" aria-labelledby="catalogDropdown" style="min-width: 250px; border: none; box-shadow: 0 10px 30px rgba(0,0,0,.15);">
+                                        <div class="dropdown-inner">
+                                            @await Component.InvokeAsync("CategoryMenu")
+                                        </div>
+                                    </div>
+                                </li>
+                                <li><a href="@Url.Action("ShowProducts", "Shopping", new { sortOrder = "new" })"><i class="fas fa-star mr-1"></i>Новинки</a></li>
+                                <li><a href="@Url.Action("ShowProducts", "Shopping", new { sortOrder = "discount" })"><i class="fas fa-percentage mr-1"></i>Акции</a></li>
+                                <li><a href="@Url.Action("ShowProducts", "Shopping", new { sortOrder = "popular" })"><i class="fas fa-fire mr-1"></i>Топ продаж</a></li>
+
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+    /* Открытие основного меню при наведении на пункт "Каталог товаров" */
+    .nav-item.dropdown:hover > .dropdown-menu {
+        display: block;
+    }
+
+    /* Открытие подменю при наведении на пункт с подкатегориями */
+    .dropdown-submenu:hover > .dropdown-menu {
+        display: block;
+    }
+
+    /* Убираем стандартную стрелку Bootstrap, если мешает */
+    .dropdown-toggle::after {
+        display: none;
+    }
+    /* Стили для многоуровневого меню */
+    .dropdown-submenu {
+        position: relative;
+    }
+
+        .dropdown-submenu .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -1px;
+            margin-left: -1px;
+            display: none;
+            position: absolute;
+            min-width: 250px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .dropdown-submenu:hover .dropdown-menu {
+            display: block;
+        }
+
+        /* Наведение на пункт с подменю */
+        .dropdown-submenu .dropdown-item {
+            cursor: pointer;
+        }
+
+    /* Стили для основного меню каталога */
+    .dropdown-menu {
+        border-radius: 0 0 8px 8px;
+        padding: 10px 0;
+        background: white;
+        left: 230px;
+    }
+
+    .dropdown-menu-right {
+        left: 0;
+    }
+
+    .dropdown-item {
+        padding: 8px 20px;
+        color: #333;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+            color: #007bff;
+        }
+
+    /* Если используется Bootstrap, могут потребоваться переопределения */
+    .dropdown-submenu .dropdown-toggle::after {
+        content: "\f054"; /* FontAwesome chevron-right */
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        border: none;
+        vertical-align: middle;
+        margin-left: 5px;
+        float: right;
+    }
+
+    .header-top {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #eaeaea;
+        font-size: 14px;
+    }
+
+    .header-contact-info {
+        color: #666;
+    }
+
+        .header-contact-info i {
+            color: #007bff;
+        }
+
+    .header-links a {
+        color: #666;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+        .header-links a:hover {
+            color: #007bff;
+        }
+
+    .header-center {
+        background-color: #fff;
+        border-bottom: 1px solid #eaeaea;
+    }
+
+    .header-logo img {
+        max-height: 50px;
+    }
+
+    .header-search {
+        position: relative;
+    }
+
+    .search-input {
+        border: 2px solid #007bff;
+        border-radius: 25px 0 0 25px;
+        padding-left: 20px;
+        height: 45px;
+    }
+
+        .search-input:focus {
+            box-shadow: none;
+            border-color: #0056b3;
+        }
+
+    .btn-search {
+        background-color: #007bff;
+        border: 2px solid #007bff;
+        border-left: none;
+        border-radius: 0 25px 25px 0;
+        color: white;
+        height: 45px;
+        width: 60px;
+        transition: all 0.3s;
+    }
+
+        .btn-search:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            color: white;
+        }
+
+    .header-actions {
+        text-align: right;
+    }
+
+    .header-action-list {
+        display: flex;
+        justify-content: flex-end;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .header-action-item {
+        margin-left: 15px;
+    }
+
+    .header-action-link {
+        display: flex;
+        align-items: center;
+        color: #333;
+        text-decoration: none;
+        padding: 8px 12px;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+        .header-action-link:hover {
+            background-color: #f8f9fa;
+            color: #007bff;
+        }
+
+    .cart-link {
+        position: relative;
+    }
+
+    .action-icon {
+        position: relative;
+        margin-right: 8px;
+        font-size: 20px;
+    }
+
+    .cart-count {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: #ff0000;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+
+    .action-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .action-text span {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+    .cart-total {
+        font-size: 14px;
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    .dropdown-menu {
+        border: none;
+        box-shadow: 0 5px 15px rgba(0,0,0,.1);
+        border-radius: 8px;
+        padding: 10px 0;
+        min-width: 200px;
+    }
+
+    .dropdown-item {
+        padding: 8px 20px;
+        color: #333;
+        transition: all 0.3s;
+    }
+
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+            color: #007bff;
+        }
+
+    .header-bottom {
+        background-color: #007bff;
+        box-shadow: 0 4px 12px rgba(0,0,0,.1);
+    }
+
+    .main-menu-list {
+        display: flex;
+        justify-content: center;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+        .main-menu-list > li {
+            position: relative;
+        }
+
+            .main-menu-list > li > a {
+                display: flex;
+                align-items: center;
+                color: white;
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 14px;
+                text-transform: uppercase;
+                padding: 15px 20px;
+                transition: all 0.3s;
+                border-bottom: 3px solid transparent;
+            }
+
+                .main-menu-list > li > a:hover,
+                .main-menu-list > li > a.active {
+                    background-color: #ff0000;
+                    border-bottom-color: white;
+                }
+
+    .mega-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: white;
+        box-shadow: 0 10px 30px rgba(0,0,0,.15);
+        border-radius: 0 0 8px 8px;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px);
+        transition: all 0.3s;
+    }
+
+    .has-dropdown:hover .mega-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+
+    .mega-menu-inner {
+        padding: 30px 0;
+    }
+
+    .mega-menu-column {
+        margin-bottom: 20px;
+    }
+
+    .mega-menu-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #007bff;
+        height: 48px;
+        display: flex;
+        align-items: center;
+    }
+
+        .mega-menu-title a {
+            color: #333;
+            text-decoration: none;
+        }
+
+            .mega-menu-title a:hover {
+                color: #007bff;
+            }
+
+    .mega-menu-sub {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        min-height: 200px;
+    }
+
+        .mega-menu-sub li {
+            margin-bottom: 8px;
+        }
+
+        .mega-menu-sub a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 14px;
+            display: block;
+        }
+
+            .mega-menu-sub a:hover {
+                color: #007bff;
+                padding-left: 5px;
+            }
+
+    .mobile-cart-icon {
+        position: relative;
+        color: #333;
+        font-size: 20px;
+        text-decoration: none;
+    }
+
+    .cart-count-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #ff0000;
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mobile-menu {
+        display: block;
+        width: 24px;
+        height: 24px;
+        position: relative;
+    }
+
+    .mobile-menu-dash {
+        display: block;
+        height: 2px;
+        background-color: #333;
+        margin-bottom: 4px;
+        border-radius: 2px;
+    }
+
+    .sticky-header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .logout-link {
+        cursor: pointer;
+    }
+
+    .header-actions .dropdown-menu {
+        z-index: 2000 !important;
+    }
+</style>
+
+<script>
+    function updateCartCount(count, total) {
+        // Обновление для десктопной версии
+        var cartCountElements = document.querySelectorAll('.cart-count');
+        cartCountElements.forEach(function(el) {
+            el.textContent = count;
+        });
+
+        var cartTotalElements = document.querySelectorAll('.cart-total');
+        cartTotalElements.forEach(function(el) {
+            el.textContent = total.toLocaleString() + ' ₽';
+        });
+
+        // Обновление для мобильной версии
+        var mobileBadges = document.querySelectorAll('.cart-count-badge');
+        mobileBadges.forEach(function(el) {
+            el.textContent = count;
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var logoutLink = document.querySelector('.logout-link');
+        if (logoutLink) {
+            logoutLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('logoutForm').submit();
+            });
+        }
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.dropdown')) {
+                var dropdowns = document.querySelectorAll('.dropdown-menu');
+                dropdowns.forEach(function(dropdown) {
+                    dropdown.style.display = 'none';
+                });
+            }
+        });
+
+        var userDropdown = document.getElementById('userDropdown');
+        if (userDropdown) {
+            userDropdown.addEventListener('click', function(e) {
+                e.preventDefault();
+                var menu = this.nextElementSibling;
+                menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+            });
+        }
+    });
+
+    $(document).ready(function() {
+        $.get('/Shopping/GetCartSummary', function(data) {
+            if (data.success) {
+                updateCartCount(data.count, data.total);
+            }
+        });
+    });
+</script>

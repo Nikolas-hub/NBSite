@@ -1,0 +1,108 @@
+﻿@using NBSite.Areas.Admin.Models
+@model ManufacturerEditVM
+@{
+    ViewData["Title"] = "Редактирование производителя";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Alias" class="control-label"></label>
+                <input asp-for="Alias" class="form-control" />
+                <span asp-validation-for="Alias" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Code" class="control-label"></label>
+                <input asp-for="Code" class="form-control" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="CountryCode" class="control-label"></label>
+                <input asp-for="CountryCode" class="form-control" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Sort" class="control-label"></label>
+                <input asp-for="Sort" class="form-control" />
+            </div>
+
+            <div class="form-group mb-3">
+                <div class="form-check">
+                    <input asp-for="Active" class="form-check-input" />
+                    <label asp-for="Active" class="form-check-label"></label>
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Introtext" class="control-label"></label>
+                <textarea asp-for="Introtext" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Content" class="control-label"></label>
+                <textarea asp-for="Content" class="form-control" rows="5"></textarea>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MetaTitle" class="control-label"></label>
+                <input asp-for="MetaTitle" class="form-control" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MetaDescription" class="control-label"></label>
+                <textarea asp-for="MetaDescription" class="form-control" rows="2"></textarea>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MetaKeywords" class="control-label"></label>
+                <input asp-for="MetaKeywords" class="form-control" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label class="control-label">Текущее изображение</label><br />
+                @if (!string.IsNullOrEmpty(Model.Image))
+                {
+                    <img src="/@Model.Image" alt="" style="max-height: 80px;" />
+                }
+                else
+                {
+                    <span>Нет изображения</span>
+                }
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" />
+                <span class="text-muted">Оставьте пустым, чтобы не менять</span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("ValidationScriptsPartial");
+    }
+}

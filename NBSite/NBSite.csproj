@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<UserSecretsId>7eea48ba-fdb2-4e51-bd4f-81b1da909b7f</UserSecretsId>
+		<DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+		<DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Controllers\Admin\**" />
+	  <Compile Remove="Data\**" />
+	  <Compile Remove="Models\Admin\**" />
+	  <Compile Remove="Views\Admin\**" />
+	  <Content Remove="Controllers\Admin\**" />
+	  <Content Remove="Data\**" />
+	  <Content Remove="Models\Admin\**" />
+	  <Content Remove="Views\Admin\**" />
+	  <EmbeddedResource Remove="Controllers\Admin\**" />
+	  <EmbeddedResource Remove="Data\**" />
+	  <EmbeddedResource Remove="Models\Admin\**" />
+	  <EmbeddedResource Remove="Views\Admin\**" />
+	  <None Remove="Controllers\Admin\**" />
+	  <None Remove="Data\**" />
+	  <None Remove="Models\Admin\**" />
+	  <None Remove="Views\Admin\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+		<PackageReference Include="MailKit" Version="4.15.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="10.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.3" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.3">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.23.0" />
+		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
+		<PackageReference Include="Serilog.AspNetCore" Version="10.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\img\" />
+	  <Folder Include="wwwroot\js\" />
+	  <Folder Include="wwwroot\scss\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Domain\Domain.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,90 @@
+﻿@using NBSite.Areas.Admin.Models
+@model UserDetailsVM
+@{
+    ViewData["Title"] = $"Пользователь {Model.Email}";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Основная информация</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>ID:</strong> @Model.Id</p>
+                <p><strong>Логин:</strong> @Model.Username</p>
+                <p><strong>Email:</strong> @Model.Email</p>
+                <p><strong>Имя:</strong> @Model.FirstName</p>
+                <p><strong>Фамилия:</strong> @Model.LastName</p>
+                <p><strong>Телефон:</strong> @Model.Phone</p>
+                <p><strong>Компания:</strong> @Model.Company</p>
+                <p><strong>Должность:</strong> @Model.CompanyPost</p>
+                <p><strong>Город:</strong> @Model.CityName</p>
+                <p><strong>Активен:</strong> <span class="badge @(Model.IsActive ? "bg-success" : "bg-danger")">@(Model.IsActive ? "Да" : "Нет")</span></p>
+                <p><strong>Сотрудник:</strong> <span class="badge @(Model.IsStaff ? "bg-info" : "bg-secondary")">@(Model.IsStaff ? "Да" : "Нет")</span></p>
+                <p><strong>Суперпользователь:</strong> <span class="badge @(Model.IsSuperuser ? "bg-warning" : "bg-secondary")">@(Model.IsSuperuser ? "Да" : "Нет")</span></p>
+                <p><strong>Дата регистрации:</strong> @Model.DateJoined.ToString("dd.MM.yyyy HH:mm")</p>
+                <p><strong>Последний вход:</strong> @(Model.LastLogin?.ToString("dd.MM.yyyy HH:mm") ?? "—")</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Заказы пользователя</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.Orders!.Any())
+                {
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>№ заказа</th>
+                                <th>Дата</th>
+                                <th>Статус</th>
+                                <th>Сумма</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var order in Model.Orders!)
+                            {
+                                <tr>
+                                    <td><a asp-area="Admin" asp-controller="Orders" asp-action="Details" asp-route-id="@order.Id">@order.Id</a></td>
+                                    <td>@order.CreatedAt.ToString("dd.MM.yyyy")</td>
+                                    <td><span class="badge @(GetStatusBadgeClass(order.StatusValue))">@order.Status</span></td>
+                                    <td>@order.Total.ToString("C")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p>У пользователя нет заказов.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">
+        <i class="fas fa-edit me-1"></i>Редактировать
+    </a>
+    <a asp-action="Index" class="btn btn-secondary">Вернуться к списку</a>
+</div>
+
+@functions {
+    string GetStatusBadgeClass(int status)
+    {
+        return status switch
+        {
+            1 => "bg-primary",
+            2 => "bg-success",
+            _ => "bg-secondary"
+        };
+    }
+}

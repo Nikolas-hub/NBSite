@@ -1,0 +1,89 @@
+﻿@using NBSite.Areas.Admin.Models
+@model DiscountEditVM
+@{
+    ViewData["Title"] = "Создание скидки";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="ProductId" class="form-label"></label>
+                <select asp-for="ProductId" class="form-control select2" asp-items="ViewBag.Products">
+                    <option value="">-- Поиск товара --</option>
+                </select>
+                <span asp-validation-for="ProductId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DiscountType" class="form-label"></label>
+                <select asp-for="DiscountType" class="form-select" asp-items="Html.GetEnumSelectList<DiscountType>()">
+                    <option value="">-- Выберите тип --</option>
+                </select>
+                <span asp-validation-for="DiscountType" class="text-danger"></span>
+                
+                <label asp-for="DiscountType" class="form-label">
+                    Тип скидки
+                    <i class="fas fa-question-circle text-muted" data-bs-toggle="tooltip" title="Процент – скидка в %; Фиксированная сумма – скидка в рублях; Новая цена – устанавливает новую цену"></i>
+                </label>
+            </div>
+
+
+            <div class="mb-3">
+                <label asp-for="Value" class="form-label"></label>
+                <input asp-for="Value" class="form-control" />
+                <span asp-validation-for="Value" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="StartDate" class="form-label"></label>
+                <input asp-for="StartDate" class="form-control" type="date" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="EndDate" class="form-label"></label>
+                <input asp-for="EndDate" class="form-control" type="date" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input asp-for="IsActive" class="form-check-input" />
+                <label asp-for="IsActive" class="form-check-label"></label>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Priority" class="form-label"></label>
+                <input asp-for="Priority" class="form-control" />
+                <span asp-validation-for="Priority" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Создать" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("ValidationScriptsPartial");}
+    <script>
+        $(function() {
+            $('.select2').select2({
+                placeholder: 'Введите название товара',
+                allowClear: true,
+                width: '100%'
+            });
+        });
+        $(function() {
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+    </script>
+}

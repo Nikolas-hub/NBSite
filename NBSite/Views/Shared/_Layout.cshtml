@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Новая Больница</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="~/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
+
+    @await Html.PartialAsync("MetatagsPartial")
+    @await Html.PartialAsync("CssPartial")
+
+
+    <!-- Секция для дополнительных стилей из конкретных страниц -->
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+    @Html.AntiForgeryToken()
+    @await Html.PartialAsync("ScriptsPartial")
+    <!-- Хедер -->
+    @await Html.PartialAsync("HeaderPartial")
+
+    <!-- Основное содержимое -->
+    <main role="main">
+        @RenderBody()
+    </main>
+
+    
+
+    @* <!-- Модальные окна -->
+    @await Html.PartialAsync("ModalWindowPartial") *@
+    <!-- Футер -->
+    @await Html.PartialAsync("FooterPartial")
+    <!-- Скрипты -->
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

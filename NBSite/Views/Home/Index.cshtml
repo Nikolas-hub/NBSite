@@ -1,0 +1,650 @@
+﻿@model IndexVM
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Главная";
+}
+
+<!-- Хлебные крошки (для мобильной версии) -->
+<div class="breadcrumb-section d-block d-md-none">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb-wrapper">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Новые поступления</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* <div class="hero-area">
+    <div class="hero-area-wrapper hero-slider-dots fix-slider-dots">
+        <!-- Слайд 1 -->
+        <div class="hero-area-single">
+            <div class="hero-area-bg">
+                <img class="hero-img" src="~/img/slider_images/home/med_tools.jpg" alt="Медицинское оборудование">
+            </div>
+
+        </div>
+
+        <!-- Слайд 2 -->
+        <div class="hero-area-single">
+            <div class="hero-area-bg">
+                <img class="hero-img" src="~/img/slider_images/home/home_slider_2.jpg" alt="Профессиональное оборудование">
+            </div>
+
+        </div>
+    </div>
+</div> *@
+
+<!-- Секция с новыми поступлениями -->
+<div class="product-section ">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="section-header mb-4 mt-15">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="section-title">Новые поступления</h2>
+                        <a href="@Url.Action("ShowProducts", "Shopping", new { sortOrder = "new" })" class="btn btn-outline-primary">
+                            Все новинки <i class="fas fa-arrow-right ms-2"></i>
+                        </a>
+                    </div>
+                    <p class="section-subtitle text-muted">Самые свежие поступления в нашем каталоге</p>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.NewProducts.Any())
+        {
+            <div class="row">
+                @foreach (var product in Model.NewProducts.Take(8))
+                {
+                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+                        <div class="product-card border-around">
+                            <!-- Изображение товара -->
+                            <div class="product-img-warp position-relative">
+                                <a href="@Url.Action("ShowProduct", "Shopping", new { alias = product.Alias })"
+                                   class="product-default-img-link d-block">
+                                    <img src="@(product.Thumbnail ?? "/img/no-image.png")"
+                                         alt="@product.Name"
+                                         class="product-default-img img-fluid">
+                                </a>
+
+                                <!-- Бейджи -->
+                                <div class="product-badges position-absolute top-0 start-0 p-2">
+                                    @if (product.IsNew)
+                                    {
+                                        <span class="badge bg-success">Новинка</span>
+                                    }
+                                    @if (product.HasDiscount)
+                                    {
+                                        <span class="badge bg-danger">-@product.DiscountPercent%</span>
+                                    }
+                                </div>
+
+
+                            </div>
+
+                            <!-- Информация о товаре -->
+                            <div class="product-default-content p-3">
+                                <!-- Название -->
+                                <h6 class="product-default-link mb-2">
+                                    <a href="@Url.Action("ShowProduct", "Shopping", new { alias = product.Alias })"
+                                       class="text-decoration-none text-dark">
+                                        @product.Name
+                                    </a>
+                                </h6>
+
+                                <!-- Категория -->
+                                @if (!string.IsNullOrEmpty(product.CategoryName))
+                                {
+                                    <div class="product-category small text-muted mb-2">
+                                        @product.CategoryName
+                                    </div>
+                                }
+                                <div class="product-footer">
+                                    <!-- Цена -->
+                                    <div class="product-price mb-3">
+                                        @if (product.HasDiscount)
+                                        {
+                                            <div class="price-old text-muted text-decoration-line-through">
+                                                @product.FormattedOldPrice
+                                            </div>
+                                        }
+                                        <div class="price-current fw-bold text-primary fs-5">
+                                            @product.FormattedPrice
+                                        </div>
+                                    </div>
+
+                                    <!-- Наличие -->
+                                    <div class="product-stock mb-2">
+                                        <span class="badge @(product.InStock ? "bg-success" : "bg-danger")">
+                                            @product.StockStatus
+                                        </span>
+                                    </div>
+                                    @if (product.InStock)
+                                    {
+                                        <!-- Блок выбора количества (только для товаров в наличии) -->
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <span class="small">Кол-во:</span>
+                                            <div class="input-group input-group-sm" style="width: 120px;">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                        onclick="decreaseQuantity(@product.Id)">
+                                                    -
+                                                </button>
+                                                <input type="number" class="form-control text-center"
+                                                       id="qty_@product.Id"
+                                                       value="@product.Multiplicity"
+                                                       min="@product.Multiplicity"
+                                                       max="@product.Quantity"
+                                                       step="@product.Multiplicity"
+                                                       onchange="validateQuantity(@product.Id)">
+                                                <button type="button" class="btn btn-outline-secondary"
+                                                        onclick="increaseQuantity(@product.Id)">
+                                                    +
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- Кнопка добавления в корзину с выбранным количеством -->
+                                        <button class="btn btn-primary w-100"
+                                                onclick="addToCart(@product.Id, document.getElementById('qty_@product.Id').value)">
+                                            <i class="fas fa-shopping-cart me-2"></i>В корзину
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <!-- Кнопка для отсутствующего товара (неактивна) -->
+                                        <button class="btn btn-primary w-100" disabled>
+                                            <i class="fas fa-shopping-cart me-2"></i>Под заказ
+                                        </button>
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="fas fa-box-open fa-4x text-muted"></i>
+                </div>
+                <h4 class="mb-3">Новых поступлений пока нет</h4>
+                <p class="text-muted mb-4">Скоро мы добавим новые товары</p>
+                <a href="@Url.Action("ShowProducts", "Shopping")" class="btn btn-primary">
+                    <i class="fas fa-shop me-2"></i>Перейти в каталог
+                </a>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Секция с популярными товарами -->
+@if (Model.PopularProducts.Any())
+{
+    <div class="product-section section-top-gap-50 bg-light py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-header mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h2 class="section-title">Популярные товары</h2>
+                            <a href="@Url.Action("ShowProducts", "Shopping", new { sortOrder = "popular" })" class="btn btn-outline-primary">
+                                Все популярные <i class="fas fa-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                        <p class="section-subtitle text-muted">Самые востребованные товары среди наших клиентов</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                @foreach (var product in Model.PopularProducts.Take(8))
+                {
+                    <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 mb-4">
+                        <div class="product-card border-around">
+                            <!-- Изображение товара -->
+                            <div class="product-img-warp position-relative">
+                                <a href="@Url.Action("ShowProduct", "Shopping", new { id = product.Alias })"
+                                   class="product-default-img-link d-block">
+                                    <img src="@(product.Thumbnail ?? "/img/no-image.png")"
+                                         alt="@product.Name"
+                                         class="product-default-img img-fluid">
+                                </a>
+
+                                <!-- Бейджи -->
+                                <div class="product-badges position-absolute top-0 start-0 p-2">
+                                    @if (product.IsPopular)
+                                    {
+                                        <span class="badge bg-warning text-dark">Топ продаж</span>
+                                    }
+                                    @if (product.HasDiscount)
+                                    {
+                                        <span class="badge bg-danger">-@product.DiscountPercent%</span>
+                                    }
+                                    @if (product.IsNew)
+                                    {
+                                        <span class="badge bg-success">Новинка</span>
+                                    }
+                                </div>
+
+
+                            </div>
+
+                            <!-- Информация о товаре -->
+                            <div class="product-default-content p-3">
+                                <!-- Название -->
+                                <h6 class="product-default-link mb-2">
+                                    <a href="@Url.Action("ShowProduct", "Shopping", new { id = product.Alias })"
+                                       class="text-decoration-none text-dark">
+                                        @product.Name
+                                    </a>
+                                </h6>
+
+                                <!-- Категория -->
+                                @if (!string.IsNullOrEmpty(product.CategoryName))
+                                {
+                                    <div class="product-category small text-muted mb-2">
+                                        @product.CategoryName
+                                    </div>
+                                }
+
+                                <!-- Производитель -->
+                                @if (!string.IsNullOrEmpty(product.ManufacturerName))
+                                {
+                                    <div class="product-manufacturer small text-muted mb-2">
+                                        Производитель: @product.ManufacturerName
+                                    </div>
+                                }
+                                <div class="product-footer">
+                                    <!-- Цена -->
+                                    <div class="product-price mb-3">
+                                        @if (product.HasDiscount)
+                                        {
+                                            <div class="price-old text-muted text-decoration-line-through">
+                                                @product.FormattedOldPrice
+                                            </div>
+                                        }
+                                        <div class="price-current fw-bold text-primary fs-5">
+                                            @product.FormattedPrice
+                                        </div>
+                                    </div>
+
+                                    <!-- Наличие -->
+                                    <div class="product-stock mb-2">
+                                        <span class="badge @(product.InStock ? "bg-success" : "bg-danger")">
+                                            @product.StockStatus
+                                        </span>
+                                    </div>
+
+                                    <!-- Кнопка в корзину -->
+                                    <button class="btn btn-primary w-100"
+                                            onclick="addToCart(@product.Id, @product.Multiplicity)"
+                                            @(!product.InStock ? "disabled" : "")>
+                                        <i class="fas fa-shopping-cart me-2"></i>В корзину
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+<!-- Секция с новостями -->
+@if (Model.LatestNews.Any())
+{
+    <div class="news-section section-top-gap-50 py-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-header mb-4">
+                        <h2 class="section-title">Последние новости</h2>
+                        <p class="section-subtitle text-muted">Актуальные новости и обновления</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                @foreach (var news in Model.LatestNews.Take(3))
+                {
+                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                        <div class="news-card card h-100 border-0 shadow-sm">
+                            @if (!string.IsNullOrEmpty(news.Thumbnail))
+                            {
+                                <img src="@Url.Content("~/" + news.Thumbnail)" class="card-img-top" alt="@news.Title" style="height: 200px; object-fit: cover;">
+                            }
+                            else if (!string.IsNullOrEmpty(news.Image))
+                            {
+                                <img src="@Url.Content("~/" + news.Image)" class="card-img-top" alt="@news.Title" style="height: 200px; object-fit: cover;">
+                            }
+                            <div class="card-body">
+                                <div class="news-meta text-muted small mb-2">
+                                    <i class="far fa-calendar me-1"></i>@news.FormattedDate
+                                </div>
+                                <h5 class="card-title">
+                                    <a href="@Url.Action("Details", "News", new { id = news.Id, alias = news.Alias })"
+                                       class="text-decoration-none text-dark">
+                                        @news.Title
+                                    </a>
+                                </h5>
+                                @if (!string.IsNullOrEmpty(news.IntroText))
+                                {
+                                    <p class="card-text text-muted">@news.IntroText</p>
+                                }
+                            </div>
+                            <div class="card-footer bg-transparent border-top-0">
+                                <a href="@Url.Action("Details", "News", new { id = news.Id, alias = news.Alias })"
+                                   class="btn btn-outline-primary">
+                                    Читать далее <i class="fas fa-arrow-right ms-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <a href="@Url.Action("Index", "News")" class="btn btn-primary">
+                        <i class="fas fa-newspaper me-2"></i>Все новости
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Styles {
+    <style>
+        .product-card {
+            display: flex !important;
+            flex-direction: column !important;
+            height: 100% !important;
+        }
+
+        .product-default-content {
+            display: flex !important;
+            flex-direction: column !important;
+            flex: 1 !important;
+        }
+
+        .product-footer {
+            margin-top: auto !important;
+        }
+
+        .hero-area {
+            position: relative;
+            margin-bottom: 60px;
+        }
+
+        .hero-area-bg {
+            position: relative;
+            height: 600px;
+            overflow: hidden;
+        }
+
+        .hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            color: white;
+        }
+
+        .hero-content-inner {
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .hero-text {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .breadcrumb-section {
+            background-color: #f8f9fa;
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: #6c757d;
+        }
+
+        .product-card {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            background: white;
+        }
+
+            .product-card:hover {
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+                transform: translateY(-5px);
+            }
+
+        .product-img-warp {
+            height: 250px;
+            overflow: hidden;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-default-img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+            padding: 15px;
+        }
+
+        .product-badges .badge {
+            font-size: 0.75rem;
+            padding: 0.35em 0.65em;
+            margin-right: 3px;
+        }
+
+        .product-action-icon-link .btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-default-link a {
+            font-weight: 500;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 2.6em;
+        }
+
+        .price-current {
+            font-size: 1.25rem;
+        }
+
+        .price-old {
+            font-size: 0.9rem;
+        }
+
+        .news-card {
+            transition: all 0.3s ease;
+        }
+
+            .news-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            }
+
+        .news-meta {
+            font-size: 0.85rem;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 0.75rem 2rem;
+            font-weight: 500;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #0056b3;
+            }
+
+        .btn-outline-primary {
+            color: #007bff;
+            border-color: #007bff;
+        }
+
+            .btn-outline-primary:hover {
+                background-color: #007bff;
+                color: white;
+            }
+
+        /* Адаптивность */
+        @@media (max-width: 768px) {
+            .hero-area-bg {
+                height: 400px;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+            }
+
+            .hero-text {
+                font-size: 1rem;
+            }
+
+            .hero-content-inner {
+                padding: 20px !important;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .product-img-warp {
+                height: 200px;
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .hero-area-bg {
+                height: 300px;
+            }
+
+            .product-img-warp {
+                height: 180px;
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        // Функция добавления товара в корзину
+        function addToCart(productId, quantity) {
+            $.ajax({
+                url: '@Url.Action("AddToBasket", "Shopping")',
+                type: 'POST',
+                data: {
+                    ProductId: productId,
+                    Quantity: quantity || 1
+                },
+                headers: {
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Показываем уведомление
+                        showNotification('Товар добавлен в корзину', 'success');
+
+                        // Обновляем счетчик корзины
+                        updateCartCount(response.cartItemCount, response.cartTotal);
+                    } else {
+                        showNotification(response.message || 'Ошибка при добавлении в корзину', 'error');
+                    }
+                },
+                error: function() {
+                    showNotification('Произошла ошибка при добавлении в корзину', 'error');
+                }
+            });
+        }
+
+        // Функция показа уведомлений
+        function showNotification(message, type) {
+            // Создаем элемент уведомления
+            var notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
+            notification.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            notification.innerHTML = `
+                                                ${message}
+                                                <button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>
+                                            `;
+
+            document.body.appendChild(notification);
+
+            // Автоматическое удаление через 5 секунд
+            setTimeout(function() {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+      
+
+        // Инициализация слайдера
+        document.addEventListener('DOMContentLoaded', function() {
+                        // Автофокус на поиск или первый элемент
+            var searchInput = document.querySelector('input[type="search"]');
+            if (searchInput) {
+                searchInput.focus();
+            }
+        });
+    </script>
+}

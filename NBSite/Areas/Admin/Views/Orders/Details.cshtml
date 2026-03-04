@@ -1,0 +1,140 @@
+﻿@using NBSite.Areas.Admin.Models
+@model OrderDetailsVM
+@{
+    ViewData["Title"] = $"Заказ №{Model.Id}";
+}
+
+<h1>Заказ №@Model.Id</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Информация о заказе</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Дата оформления:</strong> @(Model.SubmittedAt?.ToString("dd.MM.yyyy HH:mm") ?? Model.CreatedAt.ToString("dd.MM.yyyy HH:mm"))</p>
+                <p><strong>Статус:</strong> <span class="badge @(GetStatusBadgeClass(Model.StatusValue))">@Model.Status</span></p>
+                <p><strong>Получатель:</strong> @Model.Reciever</p>
+                <p><strong>Email:</strong> @Model.Email</p>
+                <p><strong>Телефон:</strong> @Model.Phone</p>
+                <p><strong>Комментарий:</strong> @(string.IsNullOrEmpty(Model.Comment) ? "—" : Model.Comment)</p>
+                <p><strong>Пользователь:</strong> @Model.UserName (ID: @Model.UserId)</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5>Доставка и оплата</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Город:</strong> @Model.CityName</p>
+                <p><strong>Способ доставки:</strong> @Model.DeliveryName</p>
+                <p><strong>Способ оплаты:</strong> @Model.PaymentName</p>
+                @if (!string.IsNullOrEmpty(Model.CouponCode))
+                {
+                    <p><strong>Купон:</strong> @Model.CouponCode</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h5>Товары в заказе</h5>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Товар</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Сумма</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Products!)
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.ProductAlias))
+                            {
+                                <a href="/Shopping/ShowProduct/@item.ProductAlias" target="_blank">@item.ProductName</a>
+                            }
+                            else
+                            {
+                                @item.ProductName
+                            }
+                        </td>
+                        <td>@item.Price.ToString("C")</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Total.ToString("C")</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3" class="text-end">Итого:</th>
+                    <th>@Model.Total.ToString("C")</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-header">
+        <h5>Изменить статус</h5>
+    </div>
+    <div class="card-body">
+        <form asp-action="UpdateStatus" method="post">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="OrderId" value="@Model.Id" />
+            <div class="row align-items-end">
+                <div class="col-md-4">
+                    <label for="NewStatus" class="form-label">Новый статус</label>
+                    <select name="NewStatus" class="form-select">
+                        @foreach (var item in ViewBag.Statuses)
+                        {
+                            if (!string.IsNullOrEmpty(item.Value))
+                            {
+                                <option value="@item.Value" selected="@(Model.StatusValue == int.Parse(item.Value))">@item.Text</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary">Обновить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Вернуться к списку</a>
+</div>
+
+@section Scripts {
+    <script>
+        // Дополнительные скрипты при необходимости
+    </script>
+}
+
+@functions {
+    string GetStatusBadgeClass(int status)
+    {
+        return status switch
+        {
+            1 => "bg-primary",    // Оформлен
+            2 => "bg-success",    // Оплачен
+            3 => "bg-warning text-dark", // Отправлен
+            4 => "bg-success",    // Доставлен
+            5 => "bg-danger",     // Отменён
+            _ => "bg-secondary"
+        };
+    }
+}

@@ -1,0 +1,1002 @@
+﻿@model ShowProductsVM
+
+@{
+    ViewData["Title"] = Model.Category?.Name ?? "Каталог товаров";
+}
+
+<!-- Хлебные крошки -->
+<div class="breadcrumb-nav">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Главная</a></li>
+            @if (Model.CategoryPath.Any())
+            {
+                foreach (var cat in Model.CategoryPath)
+                {
+                    if (cat == Model.CategoryPath.Last())
+                    {
+                        <li class="breadcrumb-item active" aria-current="page">@cat.Name</li>
+                    }
+                    else
+                    {
+                        <li class="breadcrumb-item"><a href="@Url.Action("ShowProducts", new { categoryAlias = cat.Alias })">@cat.Name</a></li>
+                    }
+                }
+            }
+            else if (!string.IsNullOrEmpty(Model.Query))
+            {
+                <li class="breadcrumb-item active" aria-current="page">Поиск: "@Model.Query"</li>
+            }
+            else if (Model.Category != null)
+            {
+                <li class="breadcrumb-item active" aria-current="page">@Model.Category.Name</li>
+            }
+            else
+            {
+                <li class="breadcrumb-item active" aria-current="page">Каталог</li>
+            }
+        </ol>
+    </nav>
+</div>
+
+<div class="shop-section">
+    <div class="container">
+        <div class="row flex-column-reverse flex-lg-row">
+            <!-- Левая колонка - Фильтры -->
+            <div class="col-lg-3">
+                <div class="sidebar-section">
+                    
+                    <!-- Фильтр по категориям -->
+                    <div class="sidebar-single-widget">
+                        <h6 class="sidebar-title">Категории</h6>
+                        <div class="sidebar-content">
+                            <div class="category-filter-tree">
+                                @await Component.InvokeAsync("CategoryFilterTree", new { categories = Model.AllCategories })
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Фильтр по цене (произвольный диапазон) -->
+                    <div class="sidebar-single-widget">
+                        <h6 class="sidebar-title">Цена</h6>
+                        <div class="sidebar-content">
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <input type="number" class="form-control form-control-sm" id="minPrice"
+                                           placeholder="От" value="@Model.MinPrice" min="0" step="0.01">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" class="form-control form-control-sm" id="maxPrice"
+                                           placeholder="До" value="@Model.MaxPrice" min="0" step="0.01">
+                                </div>
+                            </div>
+                            <button class="btn btn-sm btn-outline-primary w-100 mt-2" onclick="applyCustomPriceFilter()">
+                                Применить
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Сортировка (мобильная версия) -->
+                    <div class="sidebar-single-widget d-lg-none">
+                        <h6 class="sidebar-title">Сортировка</h6>
+                        <div class="sidebar-content">
+                            <select class="form-select" id="mobileSortSelect" onchange="applyFilters()">
+                                <option value="name_asc" data-selected="@(Model.SortOrder == "name_asc")">По названию (А-Я)</option>
+                                <option value="name_desc" data-selected="@(Model.SortOrder == "name_desc")">По названию (Я-А)</option>
+                                <option value="price_asc" data-selected="@(Model.SortOrder == "price_asc")">По цене (дешевые)</option>
+                                <option value="price_desc" data-selected="@(Model.SortOrder == "price_desc")">По цене (дорогие)</option>
+                                <option value="newest" data-selected="@(Model.SortOrder == "newest")">Сначала новые</option>
+                                <option value="popular" data-selected="@(Model.SortOrder == "popular")">Популярные</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Информация о наличии -->
+                    <div class="sidebar-single-widget">
+                        <h6 class="sidebar-title">Наличие</h6>
+                        <div class="sidebar-content">
+                            <div class="filter-type-select">
+                                <ul>
+                                    <li>
+                                        <label class="checkbox-default">
+                                            <input type="checkbox" id="inStockFilter" onchange="applyFilters()" @(Model.InStock == true ? "checked" : "")>
+                                            <span>Только в наличии</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Кнопка сброса всех фильтров -->
+                    <div class="sidebar-single-widget">
+                        <div class="sidebar-content">
+                            <button class="btn btn-outline-secondary w-100" onclick="resetFilters()">
+                                <i class="fas fa-times me-2"></i>Сбросить все фильтры
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правая колонка - Товары -->
+            <div class="col-lg-9">
+                <!-- Панель сортировки и информация -->
+                <div class="shop-sort-section mb-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <!-- Информация о количестве товаров -->
+                        <div class="page-amount">
+                            <span>Найдено товаров: @Model.TotalCount</span>
+                        </div>
+
+                        <!-- Сортировка (десктопная версия) -->
+                        <div class="sort-select-list d-none d-lg-block">
+                            <select class="form-select" id="desktopSortSelect" onchange="applyFilters()" style="width: auto;">
+                                <option value="name_asc" data-selected="@(Model.SortOrder == "name_asc")">По названию (А-Я)</option>
+                                <option value="name_desc" data-selected="@(Model.SortOrder == "name_desc")">По названию (Я-А)</option>
+                                <option value="price_asc" data-selected="@(Model.SortOrder == "price_asc")">По цене (дешевые)</option>
+                                <option value="price_desc" data-selected="@(Model.SortOrder == "price_desc")">По цене (дорогие)</option>
+                                <option value="newest" data-selected="@(Model.SortOrder == "newest")">Сначала новые</option>
+                                <option value="popular" data-selected="@(Model.SortOrder == "popular")">Популярные</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Сетка товаров -->
+                <div class="sort-product-tab-wrapper">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                @if (Model.Products.Any())
+                                {
+                                    <div class="row">
+                                        @foreach (var product in Model.Products)
+                                        {
+                                            <div class="col-xl-4 col-md-6 col-sm-6 col-12 mb-4">
+                                                <div class="product-card border-around">
+                                                    <!-- Изображение товара с бейджами -->
+                                                    <div class="product-img-warp position-relative">
+                                                        <a href="@Url.Action("ShowProduct", "Shopping", new { id = product.Alias })"
+                                                           class="product-default-img-link d-block">
+                                                            <img src="@(!string.IsNullOrEmpty(product.Image) ? $"/{product.Image}?size=400x400" : "/img/no-image.png")"
+                                                                 alt="@product.Name"
+                                                                 class="product-default-img img-fluid">
+                                                        </a>
+
+                                                        <!-- Бейджи -->
+                                                        <div class="product-badges position-absolute top-0 start-0 p-2">
+                                                            @if (product.HasDiscount)
+                                                            {
+                                                                <span class="badge bg-danger">@product.DiscountBadgeText</span>
+                                                            }
+                                                            @if (product.IsNew)
+                                                            {
+                                                                <span class="badge bg-success">Новинка</span>
+                                                            }
+                                                            @if (product.IsPopular)
+                                                            {
+                                                                <span class="badge bg-warning">Топ продаж</span>
+                                                            }
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Информация о товаре + выбор количества -->
+                                                    <div class="product-default-content p-3">
+                                                        <!-- Название -->
+                                                        <h6 class="product-default-link ">
+                                                            <a href="@Url.Action("ShowProduct", "Shopping", new { id = product.Alias })"
+                                                               class="text-decoration-none text-dark">
+                                                                @product.Name
+                                                            </a>
+                                                        </h6>
+
+                                                        <!-- Категория -->
+                                                        @if (!string.IsNullOrEmpty(product.CategoryName))
+                                                        {
+                                                            <div class="product-category small text-muted ">
+                                                                @product.CategoryName
+                                                            </div>
+                                                        }
+
+                                                        <!-- Производитель -->
+                                                        @if (!string.IsNullOrEmpty(product.ManufacturerName))
+                                                        {
+                                                            <div class="product-manufacturer small text-muted">
+                                                                Производитель: @product.ManufacturerName
+                                                            </div>
+                                                        }
+                                                        <div class="product-footer">
+                                                        <!-- Цена -->
+                                                            <div class="product-price mb-3">
+                                                                @if (product.HasDiscount && product.DiscountedPrice.HasValue)
+                                                                {
+                                                                    <div class="price-old text-primary text-decoration-line-through">
+                                                                        @product.FormattedPrice   @* исходная цена зачёркнута *@
+                                                                    </div>
+                                                                    <div class="price-current fw-bold text-danger fs-5">
+                                                                        @($"{product.DiscountedPrice.Value:C}")   @* цена со скидкой красным *@
+                                                                    </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="price-current fw-bold text-primary fs-5">
+                                                                        @product.FormattedPrice
+                                                                    </div>
+                                                                }
+                                                            </div>
+
+                                                        <!-- Наличие -->
+                                                        <div class="product-stock mb-2">
+                                                            <span class="badge @(product.InStock ? "bg-success" : "bg-danger")">
+                                                                @product.StockStatus
+                                                            </span>
+                                                        </div>
+
+                                                        @if (product.InStock)
+                                                        {
+                                                            <!-- Блок выбора количества (только для товаров в наличии) -->
+                                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                <span class="small">Кол-во:</span>
+                                                                <div class="input-group input-group-sm" style="width: 120px;">
+                                                                    <button type="button" class="btn btn-outline-secondary"
+                                                                            onclick="decreaseQuantity(@product.Id)">
+                                                                        -
+                                                                    </button>
+                                                                    <input type="number" class="form-control text-center"
+                                                                           id="qty_@product.Id"
+                                                                           value="@product.Multiplicity"
+                                                                           min="@product.Multiplicity"
+                                                                           max="@product.Quantity"
+                                                                           step="@product.Multiplicity"
+                                                                           onchange="validateQuantity(@product.Id)">
+                                                                    <button type="button" class="btn btn-outline-secondary"
+                                                                            onclick="increaseQuantity(@product.Id)">
+                                                                        +
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Кнопка добавления в корзину с выбранным количеством -->
+                                                            <button class="btn btn-primary w-100"
+                                                                    onclick="addToCart(@product.Id, document.getElementById('qty_@product.Id').value)">
+                                                                <i class="fas fa-shopping-cart me-2"></i>В корзину
+                                                            </button>
+                                                        }
+                                                        else
+                                                        {
+                                                            <!-- Кнопка для отсутствующего товара (неактивна) -->
+                                                            <button class="btn btn-primary w-100" disabled>
+                                                                <i class="fas fa-shopping-cart me-2"></i>Под заказ
+                                                            </button>
+                                                        }
+                                                    </div></div>
+                                                </div> <!-- закрытие product-card -->
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="text-center py-5">
+                                        <div class="mb-4">
+                                            <i class="fas fa-search fa-4x text-muted"></i>
+                                        </div>
+                                        <h4 class="mb-3">Товары не найдены</h4>
+                                        <p class="text-muted mb-4">Попробуйте изменить параметры поиска или фильтры</p>
+                                        <button class="btn btn-primary" onclick="resetFilters()">
+                                            <i class="fas fa-redo me-2"></i>Сбросить фильтры
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Пагинация -->
+                @if (Model.TotalPages > 1)
+                {
+                    <div class="page-pagination text-center mt-5">
+                        <nav aria-label="Навигация по страницам">
+                            <ul class="pagination justify-content-center">
+                                <!-- Кнопка "Назад" -->
+                                @{
+                                    var prevPageUrl = GetPageUrl(Model.CurrentPage - 1);
+                                }
+                                <li class="page-item @(!Model.HasPreviousPage ? "disabled" : "")">
+                                    @if (Model.HasPreviousPage)
+                                    {
+                                        <a class="page-link" href="@prevPageUrl" aria-label="Предыдущая">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="page-link" aria-label="Предыдущая">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </span>
+                                    }
+                                </li>
+
+                                <!-- Номера страниц -->
+                                @for (int i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    var pageUrl = GetPageUrl(i);
+                                    if (i == 1 || i == Model.TotalPages || (i >= Model.CurrentPage - 2 && i <= Model.CurrentPage + 2))
+                                    {
+                                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                            <a class="page-link" href="@pageUrl">@i</a>
+                                        </li>
+                                    }
+                                    else if (i == Model.CurrentPage - 3 || i == Model.CurrentPage + 3)
+                                    {
+                                        <li class="page-item disabled">
+                                            <span class="page-link">...</span>
+                                        </li>
+                                    }
+                                }
+
+                                <!-- Кнопка "Вперед" -->
+                                @{
+                                    var nextPageUrl = GetPageUrl(Model.CurrentPage + 1);
+                                }
+                                <li class="page-item @(!Model.HasNextPage ? "disabled" : "")">
+                                    @if (Model.HasNextPage)
+                                    {
+                                        <a class="page-link" href="@nextPageUrl" aria-label="Следующая">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <span class="page-link" aria-label="Следующая">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </span>
+                                    }
+                                </li>
+                            </ul>
+                        </nav>
+                        @Html.AntiForgeryToken()
+
+                        <div class="text-muted small mt-2">
+                            Страница @Model.CurrentPage из @Model.TotalPages
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@functions {
+    // Функция для генерации URL страниц с сохранением параметров
+    public string GetPageUrl(int page)
+    {
+        var queryParams = new Dictionary<string, string>();
+
+        if (Model.MinPrice.HasValue)
+            queryParams["minPrice"] = Model.MinPrice.Value.ToString();
+        if (Model.MaxPrice.HasValue)
+            queryParams["maxPrice"] = Model.MaxPrice.Value.ToString();
+        if (Model.SelectedCategoryIds.Any())
+            queryParams["categoryIds"] = string.Join(",", Model.SelectedCategoryIds);
+
+        // Добавляем существующие параметры
+        if (Model.Category != null && !string.IsNullOrEmpty(Model.Category.Alias))
+        {
+            queryParams["categoryAlias"] = Model.Category.Alias;
+        }
+
+        if (!string.IsNullOrEmpty(Model.PriceFilter))
+        {
+            queryParams["priceFilter"] = Model.PriceFilter;
+        }
+
+        if (!string.IsNullOrEmpty(Model.SortOrder))
+        {
+            queryParams["sortOrder"] = Model.SortOrder;
+        }
+
+        if (!string.IsNullOrEmpty(Model.Query))
+        {
+            queryParams["query"] = Model.Query;
+        }
+
+        if (Model.InStock == true)
+            queryParams["inStock"] = "true";
+
+        // Добавляем номер страницы
+        queryParams["page"] = page.ToString();
+
+        // Формируем строку запроса
+        var queryStringBuilder = new System.Text.StringBuilder("?");
+        bool isFirst = true;
+        foreach (var param in queryParams)
+        {
+            if (!isFirst)
+            {
+                queryStringBuilder.Append("&");
+            }
+            queryStringBuilder.Append($"{param.Key}={Uri.EscapeDataString(param.Value)}");
+            isFirst = false;
+        }
+
+        return queryStringBuilder.ToString();
+    }
+}
+
+@section Styles {
+    <style>
+        .product-card {
+            display: flex !important;
+            flex-direction: column !important;
+            height: 100% !important;
+        }
+
+        .product-default-content {
+            display: flex !important;
+            flex-direction: column !important;
+            flex: 1 !important;
+        }
+
+        .product-footer {
+            margin-top: auto !important;
+        }
+
+        /* Основной контейнер дерева */
+        .category-filter-tree {
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden; /* убираем горизонтальную прокрутку */
+            padding-right: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Элемент категории (строка с чекбоксом, без дочерних) */
+        .category-filter-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            width: 100%;
+            overflow: hidden; /* на всякий случай */
+        }
+
+        /* Группа категорий (details) */
+        .category-group {
+            margin-bottom: 8px;
+            border: none;
+        }
+
+        /* Заголовок группы (summary) */
+        .category-summary {
+            list-style: none;
+            cursor: pointer;
+            display: flex;
+            align-items: flex-start;
+            padding: 2px 0;
+            outline: none;
+        }
+
+            /* Скрываем стандартный маркер details */
+            .category-summary::-webkit-details-marker {
+                display: none;
+            }
+
+            /* Кастомная стрелка */
+            .category-summary::before {
+                content: '▶';
+                font-size: 12px;
+                margin-right: 8px;
+                color: #007bff;
+                transition: transform 0.2s;
+                display: inline-block;
+                flex-shrink: 0;
+            }
+
+        /* Поворот стрелки при открытом details */
+        details[open] > .category-summary::before {
+            transform: rotate(90deg);
+        }
+
+        /* Контейнер дочерних категорий */
+        .category-children {
+            margin-left: 15px; /* отступ слева для вложенности */
+            padding-left: 8px;
+            border-left: 1px dashed #dee2e6;
+        }
+
+        /* Общий стиль для лейбла с чекбоксом (используется и в .category-filter-item, и в .category-summary) */
+        .category-filter-item .checkbox-default,
+        .category-summary .checkbox-default {
+            display: flex;
+            align-items: flex-start;
+            flex: 1;
+            min-width: 0; /* позволяет тексту сжиматься */
+            cursor: pointer;
+            margin: 0;
+            padding: 0;
+        }
+
+            /* Чекбокс */
+            .category-filter-item .checkbox-default input[type="checkbox"],
+            .category-summary .checkbox-default input[type="checkbox"] {
+                flex-shrink: 0;
+                width: 18px;
+                height: 18px;
+                margin: 2px 8px 0 0;
+                accent-color: #007bff; /* цвет галочки */
+                cursor: pointer;
+            }
+
+            /* Текст категории — с переносом */
+            .category-filter-item .checkbox-default span,
+            .category-summary .checkbox-default span {
+                white-space: normal;
+                word-break: break-word;
+                overflow-wrap: break-word;
+                hyphens: auto;
+                line-height: 1.4;
+                font-size: 14px;
+                color: #333;
+            }
+
+        /* Адаптация для мобильных устройств */
+        @@media (max-width: 768px) {
+            .category-filter-item .checkbox-default span,
+            .category-summary .checkbox-default span {
+                font-size: 13px;
+            }
+
+            .category-children {
+                margin-left: 10px;
+                padding-left: 5px;
+            }
+
+            .category-filter-tree {
+                max-height: 250px;
+            }
+        }
+
+        /* Сбрасываем возможные лишние трансформации и смещения от глобальных стилей */
+        .category-filter-item .checkbox-default,
+        .category-summary .checkbox-default {
+            transform: none;
+        }
+
+            .category-filter-item .checkbox-default input::after,
+            .category-summary .checkbox-default input::after,
+            .category-filter-item .checkbox-default input::before,
+            .category-summary .checkbox-default input::before {
+                display: none;
+                content: none;
+            }
+
+        .product-quantity-selector .input-group {
+            max-width: 120px;
+            margin: 0 auto;
+        }
+
+            .product-quantity-selector .input-group .form-control {
+                text-align: center;
+                font-size: 0.9rem;
+            }
+
+        .breadcrumb-section {
+            background-color: #f8f9fa;
+            
+        }
+        .breadcrumb-item:first-child::before {
+            content: "" !important;
+        }
+
+        .breadcrumb-item::before {
+            content: "" !important;
+        }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: "" !important;
+            padding: 0 5px;
+            color: #6c757d;
+        }
+
+        .breadcrumb-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .product-card {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            background: white;
+        }
+
+            .product-card:hover {
+                box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+                transform: translateY(-5px);
+            }
+
+        .product-img-warp {
+            height: 170px;
+            overflow: hidden;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-default-img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+            padding: 15px;
+        }
+
+        .product-badges .badge {
+            font-size: 0.75rem;
+            padding: 0.35em 0.65em;
+            margin-right: 3px;
+        }
+
+        .product-action-icon-link .btn {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-default-link a {
+            font-weight: 500;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: 2.8em;
+        }
+
+        .price-old {
+            font-size: 0.9rem;
+        }
+
+        .price-current {
+            font-size: 1.25rem;
+        }
+
+        .sidebar-single-widget {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .filter-type-select ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .filter-type-select li {
+            margin-bottom: 8px;
+        }
+
+        .radio-default, .checkbox-default {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+            .radio-default input[type="radio"],
+            .checkbox-default input[type="checkbox"] {
+                margin-right: 10px;
+                cursor: pointer;
+            }
+
+            .radio-default span,
+            .checkbox-default span {
+                font-size: 0.9rem;
+            }
+
+        .page-pagination .pagination {
+            margin-bottom: 0;
+        }
+
+        .page-pagination .page-item.active .page-link {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .page-pagination .page-link {
+            color: #007bff;
+            border: 1px solid #dee2e6;
+        }
+
+            .page-pagination .page-link:hover {
+                background-color: #e9ecef;
+            }
+
+        .page-amount {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .form-select {
+            border-color: #ced4da;
+            border-radius: 4px;
+        }
+
+            .form-select:focus {
+                border-color: #007bff;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+            }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #0056b3;
+            }
+
+            .btn-primary:disabled {
+                background-color: #6c757d;
+                border-color: #6c757d;
+            }
+
+        .btn-light {
+            background-color: white;
+            border-color: #dee2e6;
+        }
+
+            .btn-light:hover {
+                background-color: #f8f9fa;
+                border-color: #dee2e6;
+            }
+
+        /* Адаптивность */
+        @@media (max-width: 768px) {
+            .product-img-warp {
+                height: 200px;
+            }
+
+            .product-card {
+                margin-bottom: 20px;
+            }
+
+            .sidebar-section {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        // Инициализация при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            // Функция для установки значения в селектах сортировки
+            function initSelect(selectId) {
+                var select = document.getElementById(selectId);
+                if (select) {
+                    var options = select.getElementsByTagName('option');
+                    for (var i = 0; i < options.length; i++) {
+                        if (options[i].getAttribute('data-selected') === 'True') {
+                            select.value = options[i].value;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Инициализация чекбокса "в наличии"
+            var inStockCheckbox = document.getElementById('inStockFilter');
+            if (inStockCheckbox) {
+                var urlParams = new URLSearchParams(window.location.search);
+                // Если параметр inStock отсутствует, то сервер по умолчанию считает его true,
+                // поэтому чекбокс должен быть отмечен.
+                if (urlParams.has('inStock')) {
+                    inStockCheckbox.checked = (urlParams.get('inStock') === 'true');
+                } else {
+                    inStockCheckbox.checked = true; // значение по умолчанию (как на сервере)
+                }
+            }
+
+            // Инициализация селектов сортировки
+            initSelect('mobileSortSelect');
+            initSelect('desktopSortSelect');
+        });
+
+        // Основная функция применения фильтров (сортировка, наличие, категории)
+        function applyFilters() {
+            var url = new URL(window.location.href);
+            var params = new URLSearchParams(url.search);
+
+            // Сортировка
+            var sortSelect = document.getElementById('desktopSortSelect') || document.getElementById('mobileSortSelect');
+            if (sortSelect && sortSelect.value) {
+                params.set('sortOrder', sortSelect.value);
+            }
+
+            // Наличие – всегда явно true/false
+            var inStockFilter = document.getElementById('inStockFilter');
+            if (inStockFilter) {
+                params.set('inStock', inStockFilter.checked ? 'true' : 'false');
+            }
+
+            // Категории (через чекбоксы)
+            var categoryCheckboxes = document.querySelectorAll('input[name="categoryIds"]:checked');
+            var categoryIds = Array.from(categoryCheckboxes).map(cb => cb.value);
+            if (categoryIds.length > 0) {
+                params.set('categoryIds', categoryIds.join(','));
+            } else {
+                params.delete('categoryIds');
+            }
+
+            // Сбрасываем поля произвольной цены (они применяются отдельно)
+            params.delete('minPrice');
+            params.delete('maxPrice');
+
+            params.set('page', '1');
+            window.location.href = url.pathname + '?' + params.toString();
+        }
+
+        // Функция применения фильтра по цене (произвольный диапазон)
+        function applyCustomPriceFilter() {
+            var minPrice = document.getElementById('minPrice').value;
+            var maxPrice = document.getElementById('maxPrice').value;
+            var url = new URL(window.location.href);
+            var params = new URLSearchParams(url.search);
+
+            if (minPrice) {
+                params.set('minPrice', minPrice);
+            } else {
+                params.delete('minPrice');
+            }
+            if (maxPrice) {
+                params.set('maxPrice', maxPrice);
+            } else {
+                params.delete('maxPrice');
+            }
+
+            // Сохраняем категории, сортировку, наличие
+            var categoryCheckboxes = document.querySelectorAll('input[name="categoryIds"]:checked');
+            var categoryIds = Array.from(categoryCheckboxes).map(cb => cb.value);
+            if (categoryIds.length > 0) {
+                params.set('categoryIds', categoryIds.join(','));
+            } else {
+                params.delete('categoryIds');
+            }
+
+            var sortSelect = document.getElementById('desktopSortSelect') || document.getElementById('mobileSortSelect');
+            if (sortSelect && sortSelect.value) {
+                params.set('sortOrder', sortSelect.value);
+            }
+
+            var inStockFilter = document.getElementById('inStockFilter');
+            if (inStockFilter) {
+                params.set('inStock', inStockFilter.checked ? 'true' : 'false');
+            }
+
+            params.set('page', '1');
+            window.location.href = url.pathname + '?' + params.toString();
+        }
+
+        // Сброс всех фильтров
+        function resetFilters() {
+            var url = new URL(window.location.href);
+            var params = new URLSearchParams();
+
+            // Сохраняем только категорию (если есть) и поисковый запрос
+            var categoryAlias = '@(Model.Category?.Alias ?? "")';
+            if (categoryAlias) {
+                params.set('categoryAlias', categoryAlias);
+            }
+
+            if ('@Model.Query') {
+                params.set('query', '@Model.Query');
+            }
+
+            // Устанавливаем фильтр "в наличии" по умолчанию (включён)
+            params.set('inStock', 'true');
+
+            window.location.href = url.pathname + '?' + params.toString();
+        }
+
+        // Остальные вспомогательные функции (увеличение/уменьшение количества, добавление в корзину и т.д.)
+        // Они остаются без изменений.
+        function increaseQuantity(productId) {
+            var input = document.getElementById('qty_' + productId);
+            if (!input) return;
+            var max = parseInt(input.max);
+            var step = parseInt(input.step);
+            var current = parseInt(input.value) || 0;
+            if (current + step <= max) {
+                input.value = current + step;
+            }
+        }
+
+        function decreaseQuantity(productId) {
+            var input = document.getElementById('qty_' + productId);
+            if (!input) return;
+            var min = parseInt(input.min);
+            var step = parseInt(input.step);
+            var current = parseInt(input.value) || 0;
+            if (current - step >= min) {
+                input.value = current - step;
+            }
+        }
+
+        function validateQuantity(productId) {
+            var input = document.getElementById('qty_' + productId);
+            if (!input) return;
+            var min = parseInt(input.min);
+            var max = parseInt(input.max);
+            var step = parseInt(input.step);
+            var value = parseInt(input.value);
+
+            if (isNaN(value) || value < min) {
+                input.value = min;
+            } else if (value > max) {
+                input.value = max;
+            } else if (value % step !== 0) {
+                input.value = Math.round(value / step) * step;
+            }
+        }
+
+        function addToCart(productId, quantity) {
+            fetch('@Url.Action("AddToBasket", "Shopping")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: new URLSearchParams({
+                    ProductId: productId,
+                    Quantity: quantity || 1
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showNotification('Товар добавлен в корзину', 'success');
+                        updateCartCount(data.cartItemCount, data.cartTotal);
+                    } else {
+                        showNotification(data.message || 'Ошибка', 'error');
+                    }
+                })
+                .catch(error => showNotification('Ошибка: ' + error.message, 'error'));
+        }
+        
+
+        function showNotification(message, type) {
+            var notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
+            notification.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            notification.innerHTML = `
+                    ${message}
+                    <button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>
+                `;
+            document.body.appendChild(notification);
+            setTimeout(function() {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+        
+    </script>
+}

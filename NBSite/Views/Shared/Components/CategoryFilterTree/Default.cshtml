@@ -1,0 +1,54 @@
+﻿@model List<CategoryFilterDto>
+
+@functions {
+    void RenderCategories(IEnumerable<CategoryFilterDto> categories, int level = 0)
+    {
+        foreach (var cat in categories)
+        {
+            if (cat.Children != null && cat.Children.Any())
+            {
+                // Проверяем, нужно ли раскрыть группу (если выбран какой-то потомок)
+                bool hasSelectedChild = HasSelectedChild(cat);
+                <details class="category-group" @(hasSelectedChild ? "open" : "")>
+                    <summary class="category-summary">
+                        <label class="checkbox-default">
+                            <input type="checkbox" name="categoryIds" value="@cat.Id" @(cat.Selected ? "checked" : "") onchange="applyFilters()" />
+                            <span>@cat.Name</span>
+                        </label>
+                    </summary>
+                    <div class="category-children">
+                        @{
+                            RenderCategories(cat.Children, level + 1);
+                        }
+                    </div>
+                </details>
+            }
+            else
+            {
+                <div class="category-filter-item" style="margin-left: @(level * 15)px;">
+                    <label class="checkbox-default">
+                        <input type="checkbox" name="categoryIds" value="@cat.Id" @(cat.Selected ? "checked" : "") onchange="applyFilters()" />
+                        <span>@cat.Name</span>
+                    </label>
+                </div>
+            }
+        }
+    }
+
+    bool HasSelectedChild(CategoryFilterDto cat)
+    {
+        if (cat.Selected) return true;
+        if (cat.Children != null)
+        {
+            foreach (var child in cat.Children)
+            {
+                if (HasSelectedChild(child)) return true;
+            }
+        }
+        return false;
+    }
+}
+
+@{
+    RenderCategories(Model);
+}

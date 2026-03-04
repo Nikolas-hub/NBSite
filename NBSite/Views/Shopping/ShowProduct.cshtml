@@ -1,0 +1,629 @@
+﻿@model ShowProductVM
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<!-- Хлебные крошки -->
+<div class="breadcrumb-section">
+    <div class="breadcrumb-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-between justify-content-md-between align-items-center flex-md-row flex-column">
+                    <h3 class="breadcrumb-title">@Model.Name</h3>
+                    <div class="breadcrumb-nav">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/">Главная</a></li>
+                                @if (Model.CategoryPath != null && Model.CategoryPath.Any())
+                                {
+                                    foreach (var cat in Model.CategoryPath)
+                                    {
+                                        <li class="breadcrumb-item">
+                                            <a href="@Url.Action("ShowProducts", "Shopping", new { categoryAlias = cat.Alias })">@cat.Name</a>
+                                        </li>
+                                    }
+                                }
+                                else if (Model.Category != null)
+                                {
+                                    // Запасной вариант, если CategoryPath не заполнен
+                                    <li class="breadcrumb-item">
+                                        <a href="@Url.Action("ShowProducts", "Shopping", new { categoryAlias = Model.Category.Alias })">@Model.Category.Name</a>
+                                    </li>
+                                }
+                                <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="product-details-section">
+    <div class="container">
+        <div class="row">
+            <!-- Левая колонка - Изображения товара -->
+            <div class="col-lg-6">
+                <div class="product-details-gallery-area">
+                    <div class="product-image-large-single">
+                        <a href="@(!string.IsNullOrEmpty(Model.Image) ? $"/{Model.Image}" : "/img/no-image.png")"
+                           data-fancybox="gallery"
+                           data-caption="@Model.Name">
+                            <img src="@(!string.IsNullOrEmpty(Model.Image) ? $"/{Model.Image}" : "/img/no-image.png")"
+                                 class="img-fluid"
+                                 alt="@Model.Name">
+                        </a>
+                    </div>
+
+                    <!-- Информация о наличии -->
+                    <div class="product-stock-info mt-4">
+                        @if (Model.Quantity > 0)
+                        {
+                            <span class="badge bg-success">В наличии</span>
+                            <span class="text-muted ms-2">Остаток: @Model.Quantity шт.</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-danger">Нет в наличии</span>
+                            <!-- Форма подписки на поступление -->
+                            <div class="subscribe-form mt-3">
+                                <p class="mb-2">Узнать о поступлении:</p>
+                                <div class="input-group">
+                                    <input type="email" class="form-control" id="subscribeEmail" placeholder="Ваш email">
+                                    <button class="btn btn-primary" onclick="subscribeToStock(@Model.Id, 'subscribeEmail')">Подписаться</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правая колонка - Информация о товаре -->
+            <div class="col-lg-6">
+                <div class="product-details-content-area">
+                    <!-- Название и артикул -->
+                    <div class="product-details-text mb-4">
+                        <h1 class="title mb-2">@Model.Name</h1>
+                        @if (!string.IsNullOrEmpty(Model.Ean13))
+                        {
+                            <div class="product-sku mb-2">
+                                <span class="text-muted">Артикул:</span> @Model.Ean13
+                            </div>
+                        }
+
+                        <!-- Производитель -->
+                        @if (Model.Manufacturer != null)
+                        {
+                            <div class="product-manufacturer mb-3">
+                                <span class="text-muted">Производитель:</span>
+                                <a href="@Url.Action("ShowProducts", "Shopping", new { query = Model.Manufacturer.Name })">@Model.Manufacturer.Name</a>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Цены -->
+                    <div class="product-price-section mb-4">
+                        @if (Model.HasDiscount)
+                        {
+                            <div class="price-old mb-1">
+                                <span class="text-muted text-decoration-line-through fs-4">@Model.OldPrice.ToString("N2") ₽</span>
+                                <span class="badge bg-danger ms-2">-@Model.DiscountPercent%</span>
+                            </div>
+                        }
+                        <div class="price-current mb-3">
+                            <span class="fs-1 fw-bold text-primary">@Model.Price.ToString("N2") ₽</span>
+                        </div>
+                    </div>
+
+                    <!-- Краткое описание -->
+                    @if (!string.IsNullOrEmpty(Model.IntroText))
+                    {
+                        <div class="product-short-description mb-4">
+                            <p>@Model.IntroText</p>
+                        </div>
+                    }
+
+                    <!-- Форма добавления в корзину -->
+                    <form id="addToCartForm" method="post" action="@Url.Action("AddToBasket", "Shopping")">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="ProductId" value="@Model.Id" />
+                        <input type="hidden" name="CategoryId" value="@Model.CategoryId" />
+
+                        <div class="product-details-variable">
+                            <!-- Количество -->
+                            <div class="variable-single-item mb-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="me-4">
+                                        <span class="fw-bold">Количество</span>
+                                    </div>
+                                    <div class="product-variable-quantity">
+                                        <div class="input-group" style="width: 150px;">
+                                            <button type="button" class="btn btn-outline-secondary" onclick="decreaseQuantity()">-</button>
+                                            <input type="number"
+                                                   class="form-control text-center"
+                                                   id="quantityInput"
+                                                   name="Quantity"
+                                                   value="@Model.Multiplicity"
+                                                   min="@Model.Multiplicity"
+                                                   max="@(Model.Quantity > 0 ? Model.Quantity : 999)"
+                                                   step="@Model.Multiplicity">
+                                            <button type="button" class="btn btn-outline-secondary" onclick="increaseQuantity()">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (Model.Multiplicity > 1)
+                                {
+                                    <div class="small text-muted">Кратность: @Model.Multiplicity</div>
+                                }
+                            </div>
+
+                            <!-- Кнопки действий -->
+                            <div class="d-flex flex-wrap gap-3 mb-4">
+                                @if (Model.Quantity > 0)
+                                {
+                                    <button type="button"
+                                            class="btn btn-primary btn-lg px-5"
+                                            onclick="addToCart(@Model.Id, document.getElementById('quantityInput').value)">
+                                        <i class="fas fa-shopping-cart me-2"></i>Добавить в корзину
+                                    </button>
+                                }
+
+                                @if (!string.IsNullOrEmpty(Model.Manual))
+                                {
+                                    <a href="@Model.Manual"
+                                       class="btn btn-outline-primary btn-lg"
+                                       target="_blank">
+                                        <i class="fas fa-file-pdf me-2"></i>Инструкция
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Дополнительная информация -->
+                    <div class="product-additional-info mb-4">
+                        <div class="row">
+                            @if (Model.Volume > 0)
+                            {
+                                <div class="col-6 mb-2">
+                                    <span class="text-muted">Объем:</span> @Model.Volume куб.см
+                                </div>
+                            }
+                            @if (Model.Weight > 0)
+                            {
+                                <div class="col-6 mb-2">
+                                    <span class="text-muted">Вес:</span> @Model.Weight гр
+                                </div>
+                            }
+                            @if (Model.ExpirationDate.HasValue)
+                            {
+                                <div class="col-6 mb-2">
+                                    <span class="text-muted">Срок годности:</span> @Model.ExpirationDate.Value.ToString("dd.MM.yyyy")
+                                </div>
+                            }
+                            @if (Model.HasReject)
+                            {
+                                <div class="col-12">
+                                    <div class="alert alert-warning mb-0">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>Товар является уцененным
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Теги -->
+                    <div class="product-tags">
+                        @if (Model.IsNew)
+                        {
+                            <span class="badge bg-info me-2">Новинка</span>
+                        }
+                        @if (Model.IsPopular)
+                        {
+                            <span class="badge bg-warning me-2">Топ продаж</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Детальное описание -->
+        @if (!string.IsNullOrEmpty(Model.Content))
+        {
+            <div class="row mt-5">
+                <div class="col-12">
+                    <div class="product-details-tabs">
+                        <ul class="nav nav-tabs" id="productTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab">
+                                    Описание
+                                </button>
+                            </li>
+                            @if (Model.Manufacturer != null)
+                            {
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="manufacturer-tab" data-bs-toggle="tab" data-bs-target="#manufacturer" type="button" role="tab">
+                                        Производитель
+                                    </button>
+                                </li>
+                            }
+                        </ul>
+                        <div class="tab-content mt-4" id="productTabContent">
+                            <div class="tab-pane fade show active" id="description" role="tabpanel">
+                                <div class="product-description">
+                                    @Html.Raw(Model.Content)
+                                </div>
+                            </div>
+                            @if (Model.Manufacturer != null)
+                            {
+                                <div class="tab-pane fade" id="manufacturer" role="tabpanel">
+                                    <div class="manufacturer-info">
+                                        <h5>@Model.Manufacturer.Name</h5>
+                                        @if (!string.IsNullOrEmpty(Model.Manufacturer.CountryCode))
+                                        {
+                                            <p class="text-muted">Страна: @Model.Manufacturer.CountryCode</p>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.Manufacturer.Introtext))
+                                        {
+                                            <p>@Model.Manufacturer.Introtext</p>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Связанные товары -->
+        @if (Model.RelatedProducts.Any())
+        {
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h3 class="section-title mb-4">Похожие товары</h3>
+                    <div class="related-products-slider">
+                        <div class="row">
+                            @foreach (var relatedProduct in Model.RelatedProducts)
+                            {
+                                <div class="col-md-3 col-sm-6 mb-4">
+                                    <div class="product-card">
+                                        <div class="product-image">
+                                            <a href="@Url.Action("ShowProduct", "Shopping", new { alias = relatedProduct.Alias })">
+                                                <img src="@(!string.IsNullOrEmpty(relatedProduct.Image) ? $"{relatedProduct.Image}?size=300x300" : "/img/no-image.png")"
+                                                     alt="@relatedProduct.Name"
+                                                     class="img-fluid">
+                                            </a>
+                                        </div>
+                                        <div class="product-info p-3">
+                                            <h5 class="product-title">
+                                                <a href="@Url.Action("ShowProduct", "Shopping", new { alias = relatedProduct.Alias })">@relatedProduct.Name</a>
+                                            </h5>
+                                            <div class="product-price">
+                                                <span class="current-price">@relatedProduct.Price.ToString("N2") ₽</span>
+                                            </div>
+                                            <button class="btn btn-sm btn-primary w-100 mt-2"
+                                                    onclick="addToCart(@Model.Id, document.getElementById('quantityInput').value)">
+                                                <i class="fas fa-cart-plus me-1"></i>В корзину
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Модальное окно для увеличенного изображения товара -->
+<div class="modal fade" id="productImageModal" tabindex="-1" aria-labelledby="productImageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="productImageModalLabel">@Model.Name</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="" alt="@Model.Name" id="modalProductImage" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .me-4 {
+            margin-right: 20px;
+        }
+
+        .breadcrumb-item:first-child::before {
+            content: "" !important;
+        }
+
+        .breadcrumb-item::before {
+            content: "" !important;
+        }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: "" !important;
+            color: #6c757d;
+        }
+
+        .breadcrumb-section {
+            background-color: #f8f9fa;
+        }
+
+        .breadcrumb-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .product-image-large-single {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            background: white;
+        }
+
+            .product-image-large-single img {
+                max-height: 500px;
+                object-fit: contain;
+            }
+
+        .product-image-thumb {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .product-image-thumb-single {
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+
+            .product-image-thumb-single:hover,
+            .product-image-thumb-single.active {
+                border-color: #007bff;
+            }
+
+        .product-price-section .price-old {
+            font-size: 1.2rem;
+            color: #6c757d;
+        }
+
+        .product-price-section .price-current {
+            color: #dc3545;
+        }
+
+        .product-stock-info .badge {
+            font-size: 0.9rem;
+            padding: 0.5em 0.8em;
+        }
+
+        .product-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: box-shadow 0.3s;
+            height: 100%;
+        }
+
+            .product-card:hover {
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+
+            .product-card .product-image {
+                height: 200px;
+                overflow: hidden;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #f8f9fa;
+            }
+
+                .product-card .product-image img {
+                    max-height: 100%;
+                    max-width: 100%;
+                    object-fit: contain;
+                }
+
+            .product-card .product-title {
+                font-size: 0.9rem;
+                height: 40px;
+                overflow: hidden;
+            }
+
+        .nav-tabs .nav-link {
+            color: #495057;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            font-weight: 500;
+        }
+
+            .nav-tabs .nav-link.active {
+                color: #007bff;
+                border-bottom: 2px solid #007bff;
+            }
+
+        .input-group .btn-outline-secondary {
+            width: 40px;
+        }
+
+        .input-group input {
+            text-align: center;
+        }
+
+        #addToCartButton:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+
+
+        // Функции для изменения количества
+        function decreaseQuantity() {
+            var input = document.getElementById('quantityInput');
+            var min = parseInt(input.min);
+            var step = parseInt(input.step);
+            var current = parseInt(input.value);
+
+            if (current - step >= min) {
+                input.value = current - step;
+            }
+        }
+
+        function increaseQuantity() {
+            var input = document.getElementById('quantityInput');
+            var max = parseInt(input.max);
+            var step = parseInt(input.step);
+            var current = parseInt(input.value);
+
+            if (current + step <= max) {
+                input.value = current + step;
+            }
+        }
+
+        // Функция добавления в корзину
+        function addToCart(productId, quantity) {
+            fetch('@Url.Action("AddToBasket", "Shopping")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+                },
+                body: new URLSearchParams({
+                    ProductId: productId,
+                    Quantity: quantity || 1
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showNotification('Товар добавлен в корзину', 'success');
+                        updateCartCount(data.cartItemCount, data.cartTotal);
+                    } else {
+                        showNotification(data.message || 'Ошибка', 'error');
+                    }
+                })
+                .catch(error => showNotification('Ошибка: ' + error.message, 'error'));
+        }
+
+
+        // Функция добавления связанного товара в корзину
+        function addRelatedToCart(productId) {
+            $.ajax({
+                url: '@Url.Action("AddToBasket", "Shopping")',
+                type: 'POST',
+                data: {
+                    ProductId: productId,
+                    Quantity: 1
+                },
+                headers: {
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function(response) {
+                    if (response.success) {
+                        showNotification('Товар добавлен в корзину', 'success');
+                        updateCartCount(response.cartItemCount);
+                    } else {
+                        showNotification(response.message || 'Ошибка при добавлении в корзину', 'error');
+                    }
+                },
+                error: function() {
+                    showNotification('Произошла ошибка при добавлении в корзину', 'error');
+                }
+            });
+        }
+
+        // Функция подписки на уведомление о поступлении
+        function subscribeToStock(productId, emailInputId) {
+            var email = document.getElementById(emailInputId).value;
+
+            if (!email || !validateEmail(email)) {
+                showNotification('Введите корректный email адрес', 'error');
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("SubscribeToStock", "Shopping")',
+                type: 'POST',
+                data: {
+                    productId: productId,
+                    email: email
+                },
+                headers: {
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function(response) {
+                    if (response.success) {
+                        showNotification(response.message, 'success');
+                        document.getElementById(emailInputId).value = '';
+                    } else {
+                        showNotification(response.message, 'error');
+                    }
+                },
+                error: function() {
+                    showNotification('Произошла ошибка при подписке', 'error');
+                }
+            });
+        }
+
+        // Функция смены основного изображения
+        function changeMainImage(imageUrl) {
+            document.getElementById('mainProductImage').src = imageUrl;
+        }
+
+        // Функция показа уведомлений
+        function showNotification(message, type) {
+            // Создаем элемент уведомления
+            var notification = document.createElement('div');
+            notification.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show`;
+            notification.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+            notification.innerHTML = `
+                        ${message}
+                        <button type="button" class="btn-close" onclick="this.parentElement.remove()"></button>
+                    `;
+
+            document.body.appendChild(notification);
+
+            // Автоматическое удаление через 5 секунд
+            setTimeout(function() {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 5000);
+        }
+
+
+             // Функция проверки email
+        function validateEmail(email) {
+            var re = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+            return re.test(email);
+        }
+
+        // Инициализация при загрузке
+        $(document).ready(function() {
+            // Инициализация вкладок
+            var triggerTabList = [].slice.call(document.querySelectorAll('#productTab button'));
+            triggerTabList.forEach(function(triggerEl) {
+                var tabTrigger = new bootstrap.Tab(triggerEl);
+                triggerEl.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    tabTrigger.show();
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,41 @@
+﻿<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="~/js/vendor/modernizr-3.11.2.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="~/js/vendor/jquery-migrate-3.3.0.min.js"></script>
+<script src="~/js/vendor/bootstrap.bundle.min.js"></script>
+<script src="~/js/vendor/jquery-ui.min.js"></script>
+
+
+<script src="~/js/plugins/slick.min.js"></script>
+<script src="~/js/plugins/material-scrolltop.js"></script>
+<script src="~/js/plugins/jquery.nice-select.min.js"></script>
+@* <script src="~/js/plugins/jquery.zoom.min.js"></script> *@
+<script src="~/js/plugins/venobox.min.js"></script>
+
+
+<script src="~/js/main.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@@fancyapps/ui@5.0.36/dist/fancybox/fancybox.umd.js"></script>
+<script>
+    Fancybox.bind('[data-fancybox]', {
+        // Разрешаем увеличение до 500% от оригинала
+        zoom: {
+            max: 5
+        },
+        // Включаем зум колёсиком мыши
+        wheel: "zoom",
+        // Включаем зум по двойному клику
+        dblclick: true,
+        // При открытии показываем изображение в оригинальном размере (маленьком)
+        initialScale: 1,
+        // Настраиваем панель инструментов – оставляем только нужные кнопки
+        Toolbar: {
+            display: {
+                middle: ["zoomIn", "zoomOut", "toggle1to1"]
+            }
+        },
+        // Если изображение меньше окна, разрешаем увеличивать всё равно
+        // (параметр minScale не влияет на зум вверх)
+        minScale: 0.5
+    });
+</script>
+

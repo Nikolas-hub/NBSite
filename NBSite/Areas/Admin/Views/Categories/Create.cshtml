@@ -1,0 +1,91 @@
+﻿@using NBSite.Areas.Admin.Models
+@model CategoryEditVM
+@{
+    ViewData["Title"] = "Добавление категории";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create" method="post">
+            @Html.AntiForgeryToken()
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Alias" class="control-label"></label>
+                <input asp-for="Alias" class="form-control" />
+                <span asp-validation-for="Alias" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Code" class="control-label"></label>
+                <input asp-for="Code" class="form-control" />
+                <span asp-validation-for="Code" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ParentCode" class="control-label"></label>
+                <select asp-for="ParentCode" class="form-control" asp-items="ViewBag.Parents">
+                    <option value="">-- Корневая категория --</option>
+                </select>
+                <span asp-validation-for="ParentCode" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Sort" class="control-label"></label>
+                <input asp-for="Sort" class="form-control" />
+                <span asp-validation-for="Sort" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <div class="form-check">
+                    <input asp-for="Active" class="form-check-input" />
+                    <label asp-for="Active" class="form-check-label"></label>
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Introtext" class="control-label"></label>
+                <textarea asp-for="Introtext" class="form-control" rows="3"></textarea>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Content" class="control-label"></label>
+                <textarea asp-for="Content" class="form-control" rows="5"></textarea>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MetaTitle" class="control-label"></label>
+                <input asp-for="MetaTitle" class="form-control" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MetaDescription" class="control-label"></label>
+                <textarea asp-for="MetaDescription" class="form-control" rows="2"></textarea>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="MetaKeywords" class="control-label"></label>
+                <input asp-for="MetaKeywords" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Добавить" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("ValidationScriptsPartial");}
+}

@@ -1,0 +1,53 @@
+﻿@model OrderHistoryVM
+@{
+    ViewData["Title"] = "История заказов";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.Orders!.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>№ заказа</th>
+                <th>Дата</th>
+                <th>Статус</th>
+                <th>Сумма</th>
+                <th>Товаров</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Orders!)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                    <td>@order.Status</td>
+                    <td>@order.Total.ToString("C")</td>
+                    <td>@order.ItemsCount</td>
+                    <td><a asp-action="OrderConfirmation" asp-route-orderId="@order.Id">Детали</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    if (Model.TotalPages > 1)
+    {
+        <nav>
+            <ul class="pagination">
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link" asp-action="OrderHistory" asp-route-page="@i">@i</a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
+}
+else
+{
+    <p>У вас пока нет заказов.</p>
+}

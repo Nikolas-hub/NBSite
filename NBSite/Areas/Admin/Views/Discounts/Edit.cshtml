@@ -1,0 +1,80 @@
+﻿@using NBSite.Areas.Admin.Models
+@model DiscountEditVM
+@{
+    ViewData["Title"] = "Редактирование скидки";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="ProductId" class="form-label"></label>
+                <select asp-for="ProductId" class="form-control select2" asp-items="ViewBag.Products">
+                    <option value="">-- Поиск товара --</option>
+                </select>
+                <span asp-validation-for="ProductId" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DiscountType" class="form-label"></label>
+                <input asp-for="DiscountType" class="form-control" />
+                <span asp-validation-for="DiscountType" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Value" class="form-label"></label>
+                <input asp-for="Value" class="form-control" />
+                <span asp-validation-for="Value" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="StartDate" class="form-label"></label>
+                <input asp-for="StartDate" class="form-control" type="date" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="EndDate" class="form-label"></label>
+                <input asp-for="EndDate" class="form-control" type="date" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input asp-for="IsActive" class="form-check-input" />
+                <label asp-for="IsActive" class="form-check-label"></label>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Priority" class="form-label"></label>
+                <input asp-for="Priority" class="form-control" />
+                <span asp-validation-for="Priority" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("ValidationScriptsPartial");}
+    <script>
+        $(function() {
+            $('.select2').select2({
+                placeholder: 'Введите название товара',
+                allowClear: true,
+                width: '100%'
+            });
+        });
+    </script>
+}

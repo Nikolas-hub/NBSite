@@ -1,0 +1,105 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\.dockerignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:.dockerignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\views\\news\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\views\\news\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\views\\news\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\views\\news\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\controllers\\newscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\controllers\\newscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": ".dockerignore",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\.dockerignore",
+              "RelativeDocumentMoniker": ".dockerignore",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\.dockerignore",
+              "RelativeToolTip": ".dockerignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001004|",
+              "WhenOpened": "2026-03-04T10:10:57.395Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\News\\Details.cshtml",
+              "RelativeDocumentMoniker": "NBSite\\Views\\News\\Details.cshtml",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\News\\Details.cshtml",
+              "RelativeToolTip": "NBSite\\Views\\News\\Details.cshtml",
+              "ViewState": "AgIAABsAAAAAAAAAAAAQwCIAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-04T08:18:37.723Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\News\\Index.cshtml",
+              "RelativeDocumentMoniker": "NBSite\\Views\\News\\Index.cshtml",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\News\\Index.cshtml",
+              "RelativeToolTip": "NBSite\\Views\\News\\Index.cshtml",
+              "ViewState": "AgIAAFwAAAAAAAAAAAAAAHAAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-04T08:17:58.989Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "NewsController.cs",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Controllers\\NewsController.cs",
+              "RelativeDocumentMoniker": "NBSite\\Controllers\\NewsController.cs",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Controllers\\NewsController.cs",
+              "RelativeToolTip": "NBSite\\Controllers\\NewsController.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAgwBcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-04T08:16:54.6Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "NBSite\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "NBSite\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAADYBAAAAAAAAAAAUwEgBAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-04T08:07:47.375Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

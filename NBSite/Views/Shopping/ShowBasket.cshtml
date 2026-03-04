@@ -1,0 +1,483 @@
+﻿@model ShowBasketVM
+
+@{
+    ViewData["Title"] = "Корзина покупок";
+}
+
+<!-- Основной контейнер -->
+<div class="container py-5">
+    <!-- Заголовок -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="mb-0" style="color: #007bff;">Корзина покупок</h1>
+        </div>
+    </div>
+    @Html.AntiForgeryToken()
+
+    @if (Model.Cart.CatalogOrderproducts != null && Model.Cart.CatalogOrderproducts.Any())
+    {
+        <div class="row">
+            <!-- Левая часть - Товары -->
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-primary text-white py-3" style="background-color: #007bff !important;">
+                        <h5 class="mb-0">Товары в корзине</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" id="cartTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th class="ps-4">Товар</th>
+                                        <th>Цена</th>
+                                        <th>Количество</th>
+                                        <th>Сумма</th>
+                                        <th class="pe-4"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.Cart.CatalogOrderproducts)
+                                    {
+                                        var product = item.Product;
+                                        var productTotal = item.Price * item.Quantity;
+
+                                        <tr data-item-id="@item.Id">
+                                            <td class="ps-4">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="flex-shrink-0 me-3">
+                                                        <img src="@(!string.IsNullOrEmpty(product.Image) ? $"/{product.Image}" : "/img/no-image.png")?size=100x100"
+                                                             
+                                                             class="img-fluid rounded"
+                                                             style="width: 80px; height: 80px; object-fit: cover;">
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <a href="@Url.Action("ShowProduct", "Shopping", new { id = product?.Alias })"
+                                                           class="text-decoration-none text-dark fw-bold">
+                                                            @product?.Name
+                                                        </a>
+                                                        @if (product?.Category != null)
+                                                        {
+                                                            <div class="text-muted small mt-1">
+                                                                Категория: @product.Category.Name
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <span class="fw-bold">@item.Price.ToString("N2") ₽</span>
+                                            </td>
+                                            <td class="align-middle">
+                                                <div class="input-group" style="width: 130px;">
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                            onclick="updateQuantity(@item.Id, @item.Quantity - 1)">
+                                                        -
+                                                    </button>
+                                                    <input type="number"
+                                                           class="form-control text-center quantity-input"
+                                                           value="@item.Quantity"
+                                                           min="1"
+                                                           max="@(product?.Quantity > 0 ? product.Quantity : 999)"
+                                                           data-item-id="@item.Id"
+                                                           data-price="@item.Price"
+                                                           style="min-width: 60px;"
+                                                           onchange="updateQuantity(@item.Id, this.value)">
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                            onclick="updateQuantity(@item.Id, @item.Quantity + 1)">
+                                                        +
+                                                    </button>
+                                                </div>
+                                                @if (product?.Multiplicity > 1)
+                                                {
+                                                    <div class="small text-muted mt-1">
+                                                        Кратность: @product.Multiplicity
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td class="align-middle">
+                                                <span class="fw-bold product-total" id="total-@item.Id">
+                                                    @productTotal.ToString("N2") ₽
+                                                </span>
+                                            </td>
+                                            <td class="pe-4 align-middle text-end">
+                                                <button type="button"
+                                                        class="btn btn-outline-danger btn-sm"
+                                                        title="Удалить"
+                                                        onclick="removeFromCart(@item.Id)">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кнопки действий -->
+                <div class="d-flex justify-content-between mb-4">
+                    <a href="@Url.Action("Index", "Home")" class="btn btn-outline-primary">
+                        <i class="fas fa-arrow-left me-2"></i>Продолжить покупки
+                    </a>
+                </div>
+            </div>
+
+            <!-- Правая часть - Итоги и оформление -->
+            <!-- Правая часть - Итоги и оформление -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm sticky-top" style="top: 20px;">
+                    <div class="card-header bg-primary text-white py-3" style="background-color: #007bff !important;">
+                        <h5 class="mb-0">Оформление заказа</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <!-- Форма оформления заказа для авторизованных пользователей -->
+                            <form id="orderForm" method="post" asp-action="SubmitOrder" asp-controller="Shopping">
+                                <!-- Контактная информация -->
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Контактная информация</h6>
+                                    <div class="mb-3">
+                                        <label class="form-label">Имя *</label>
+                                        <input type="text" class="form-control" name="Name"
+                                               value="@User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value @User.FindFirst(System.Security.Claims.ClaimTypes.Surname)?.Value"
+                                               required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Email *</label>
+                                        <input type="email" class="form-control" name="Email"
+                                               value="@User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value"
+                                               required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Телефон *</label>
+                                        <input type="tel" class="form-control" name="Phone" required>
+                                    </div>
+                                </div>
+
+                                <!-- Доставка -->
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Способ доставки</h6>
+                                    @foreach (var delivery in Model.Deliveries)
+                                    {
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input delivery-option"
+                                                   type="radio"
+                                                   name="DeliveryId"
+                                                   value="@delivery.Id"
+                                                   id="delivery-@delivery.Id"
+                                                   @(Model.Cart.DeliveryId == delivery.Id ? "checked" : "")>
+                                            <label class="form-check-label" for="delivery-@delivery.Id">
+                                                @delivery.Name
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+
+                                <!-- Оплата -->
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Способ оплаты</h6>
+                                    @foreach (var payment in Model.Payments)
+                                    {
+                                        <div class="form-check mb-2">
+                                            <input class="form-check-input payment-option"
+                                                   type="radio"
+                                                   name="PaymentId"
+                                                   value="@payment.Id"
+                                                   id="payment-@payment.Id"
+                                                   @(Model.Cart.PaymentId == payment.Id ? "checked" : "")>
+                                            <label class="form-check-label" for="payment-@payment.Id">
+                                                @payment.Name
+                                            </label>
+                                        </div>
+                                    }
+                                </div>
+
+                                <!-- Город -->
+                                <div class="mb-4">
+                                    <h6 class="mb-3">Город доставки</h6>
+                                    <select class="form-select" name="CityId">
+                                        <option value="">Выберите город</option>
+                                        @foreach (var city in Model.Cities)
+                                        {
+                                            @if (Model.Cart.CityId == city.Id)
+                                            {
+                                                <option value="@city.Id" selected="selected">@city.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@city.Id">@city.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+
+                                <!-- Комментарий -->
+                                <div class="mb-4">
+                                    <label class="form-label">Комментарий к заказу</label>
+                                    <textarea class="form-control" name="Comment" rows="3"></textarea>
+                                </div>
+
+                                <!-- Промокод (если будет реализован) -->
+                                <div class="mb-4">
+                                    <label class="form-label">Промокод (если есть)</label>
+                                    <input type="text" class="form-control" name="CouponCode">
+                                </div>
+
+                                <!-- Итоги -->
+                                <div class="border-top pt-3 mt-3">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Товары:</span>
+                                        <span id="subtotal">@Model.Cart.CatalogOrderproducts.Sum(p => p.Price * p.Quantity).ToString("N2") ₽</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Доставка:</span>
+                                        <span id="delivery-cost">Рассчитывается</span>
+                                    </div>
+                                    <hr>
+                                    <div class="d-flex justify-content-between mb-4">
+                                        <span class="fs-5 fw-bold">Итого:</span>
+                                        <span class="fw-bold fs-5 text-primary" id="total">@Model.Cart.CatalogOrderproducts.Sum(p => p.Price * p.Quantity).ToString("N2") ₽</span>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary w-100 py-2"
+                                            style="background-color: #007bff; border-color: #007bff;">
+                                        <i class="fas fa-check me-2"></i>Оформить заказ
+                                    </button>
+
+                                    <div class="mt-3 text-center">
+                                        <small class="text-muted">Внимание! Работаем только с Юридическими лицами и ИП.</small>
+                                    </div>
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <!-- Блок для неавторизованных пользователей -->
+                            <div class="alert alert-info text-center">
+                                <h5>Для оформления заказа необходимо войти на сайт</h5>
+                                <p>Вы можете продолжить покупки, а перед оформлением заказа войти в личный кабинет.</p>
+                                <a href="@Url.Action("Login", "Account")" class="btn btn-primary mb-2">Войти</a>
+                                <a href="@Url.Action("Register", "Account")" class="btn btn-outline-primary">Зарегистрироваться</a>
+                            </div>
+
+                            <!-- Итоги (без кнопки оформления) можно показать для информации -->
+                            <div class="border-top pt-3 mt-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Товары:</span>
+                                    <span id="subtotal">@Model.Cart.CatalogOrderproducts.Sum(p => p.Price * p.Quantity).ToString("N2") ₽</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span>Доставка:</span>
+                                    <span id="delivery-cost">Рассчитывается</span>
+                                </div>
+                                <hr>
+                                <div class="d-flex justify-content-between mb-4">
+                                    <span class="fs-5 fw-bold">Итого:</span>
+                                    <span class="fw-bold fs-5 text-primary" id="total">@Model.Cart.CatalogOrderproducts.Sum(p => p.Price * p.Quantity).ToString("N2") ₽</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Пустая корзина -->
+        <div class="card border-0 shadow-sm">
+            <div class="card-body py-5 text-center">
+                <div class="mb-4">
+                    <i class="fas fa-shopping-cart fa-4x" style="color: #007bff;"></i>
+                </div>
+                <h4 class="mb-3" style="color: #007bff;">Ваша корзина пуста</h4>
+                <p class="text-muted mb-4">Добавьте товары, чтобы сделать заказ</p>
+                <a href="@Url.Action("ShowProducts", "Shopping")" class="btn btn-primary"
+                   style="background-color: #007bff; border-color: #007bff;">
+                    <i class="fas fa-shopping-bag me-2"></i>Перейти в каталог
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    /* Настройки ширины колонок */
+    #cartTable {
+        width: 100%;
+        table-layout: fixed; /* фиксированная раскладка для контроля ширины */
+    }
+
+        #cartTable th:first-child,
+        #cartTable td:first-child {
+            width: 40%; /* колонка с товаром (изображение + описание) */
+        }
+
+        #cartTable th:nth-child(2),
+        #cartTable td:nth-child(2) {
+            width: 10%; /* цена */
+        }
+
+        #cartTable th:nth-child(3),
+        #cartTable td:nth-child(3) {
+            width: 20%; /* количество */
+        }
+
+        #cartTable th:nth-child(4),
+        #cartTable td:nth-child(4) {
+            width: 15%; /* сумма */
+        }
+
+        #cartTable th:last-child,
+        #cartTable td:last-child {
+            width: 5%; /* кнопка удаления */
+            text-align: right;
+        }
+
+        /* Улучшаем отображение ячейки с товаром */
+        #cartTable td:first-child .d-flex {
+            display: flex;
+            align-items: flex-start; /* выравнивание по верхнему краю */
+            gap: 15px;
+        }
+
+        #cartTable td:first-child img {
+            width: 80px;
+            height: 80px;
+            object-fit: contain; /* чтобы изображение не искажалось */
+            flex-shrink: 0; /* не даём сжиматься */
+        }
+
+        #cartTable td:first-child a {
+            font-weight: 500;
+            word-wrap: break-word;
+        }
+
+    /* Адаптация для мобильных устройств */
+    @@media (max-width: 768px) {
+        #cartTable {
+            table-layout: auto; /* отключаем фиксированную ширину */
+        }
+
+            #cartTable td:first-child .d-flex {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            #cartTable td:first-child img {
+                width: 60px;
+                height: 60px;
+            }
+        /* Можно добавить стили для того, чтобы таблица превращалась в карточки */
+        .table-responsive {
+            border: 0;
+        }
+    }
+</style>
+
+
+<script>
+        // Функция обновления количества
+        function updateQuantity(itemId, newQuantity) {
+            if (newQuantity < 1) {
+                if (confirm('Удалить товар из корзины?')) {
+                    removeFromCart(itemId);
+                }
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("UpdateCartItem", "Shopping")',
+                type: 'POST',
+                data: {
+                    itemId: itemId,
+                    quantity: newQuantity
+                },
+                headers: {
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Обновляем сумму товара и общие итоги
+                        $('#total-' + itemId).text(response.itemPrice.toLocaleString() + ' ₽');
+                        $('#cartTable input[data-item-id="' + itemId + '"]').val(response.itemQuantity);
+                        updateCartTotals(response.totalItems, response.totalPrice);
+                    } else {
+                        alert(response.message || 'Ошибка при обновлении');
+                    }
+                },
+                error: function() {
+                    alert('Ошибка при обновлении количества');
+                }
+            });
+        }
+
+    // Функция удаления товара
+    function removeFromCart(itemId) {
+        if (!confirm('Удалить товар из корзины?')) return;
+
+        $.ajax({
+            url: '@Url.Action("RemoveFromCart", "Shopping")',
+            type: 'POST',
+            data: {
+                itemId: itemId
+            },
+            headers: {
+                'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+            },
+            success: function(response) {
+                if (response.success) {
+                    // Удаляем строку из таблицы
+                    $('tr[data-item-id="' + itemId + '"]').remove();
+                    updateCartTotals(response.totalItems, response.totalPrice);
+
+                    // Если товаров больше нет, перезагружаем страницу (или показываем заглушку)
+                    if ($('#cartTable tbody tr').length === 0) {
+                        location.reload();
+                    }
+                } else {
+                    alert(response.message || 'Ошибка при удалении');
+                }
+            },
+            error: function() {
+                alert('Ошибка при удалении');
+            }
+        });
+    }
+
+    // Обновление итоговых сумм
+    function updateCartTotals(totalItems, totalPrice) {
+        $('#subtotal').text(totalPrice.toLocaleString() + ' ₽');
+        $('#total').text(totalPrice.toLocaleString() + ' ₽');
+
+        // Обновляем счетчик в шапке, если функция определена глобально
+        if (typeof updateCartCount === 'function') {
+            updateCartCount(totalItems, totalPrice);
+        }
+    }
+
+    $('.delivery-option, .payment-option, select[name="CityId"]').change(function() {
+        var deliveryId = $('input[name="DeliveryId"]:checked').val();
+        var paymentId = $('input[name="PaymentId"]:checked').val();
+        var cityId = $('select[name="CityId"]').val();
+
+        $.ajax({
+            url: '@Url.Action("UpdateDeliveryAndPayment", "Shopping")',
+            type: 'POST',
+            data: {
+                deliveryId: deliveryId,
+                paymentId: paymentId,
+                cityId: cityId
+            },
+            headers: { 'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() },
+            success: function(response) {
+                if (!response.success) {
+                    alert(response.message);
+                }
+            }
+        });
+    });
+</script>

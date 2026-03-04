@@ -1,0 +1,644 @@
+﻿@using System.Security.Claims
+<button class="material-scrolltop" type="button"></button>
+
+<div id="mobile-menu-offcanvas" class="offcanvas offcanvas-leftside offcanvas-mobile-menu-section">
+    <div class="offcanvas-header text-right">
+        <button class="offcanvas-close"><i class="fas fa-times"></i></button>
+    </div>
+
+    <div class="offcanvas-mobile-menu-wrapper">
+        <!-- Верхняя часть меню -->
+        <div class="mobile-menu-top">
+            <span>Фармотдел Новая Больница</span>
+        </div>
+
+        <!-- Центральная часть с контактами и иконками -->
+        <div class="mobile-menu-center">
+            <div class="mobile-menu-customer-support">
+                <div class="mobile-menu-customer-support-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <div class="mobile-menu-customer-support-text">
+                    <span>Связаться с нами</span>
+                    <a class="mobile-menu-customer-support-text-phone" href="tel:+78001234567">8 (800) 123-45-67</a>
+                </div>
+            </div>
+
+            <ul class="mobile-action-icon">
+                @if (!User.Identity!.IsAuthenticated)
+                {
+                    <li class="mobile-action-icon-item">
+                        <a href="/Account/Login" class="mobile-action-icon-link">
+                            <i class="far fa-user"></i>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="mobile-action-icon-item">
+                        <a href="/Shopping/ShowBasket" class="mobile-action-icon-link">
+                            <i class="fas fa-shopping-cart"></i>
+                            @if (ViewData["AmountBasket"] != null && Convert.ToInt32(ViewData["AmountBasket"]) > 0)
+                            {
+                                <span class="mobile-cart-count">@ViewData["AmountBasket"]</span>
+                            }
+                        </a>
+                    </li>
+                    <li class="mobile-action-icon-item">
+                        @{
+                            var userNameClaim = User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value
+                            ?? User.Claims.FirstOrDefault(c => c.Type == "FirstName")?.Value
+                            ?? User.Identity?.Name
+                            ?? "Пользователь";
+
+                            var isAdmin = User.Claims.Any(c => c.Type == ClaimTypes.Role && (c.Value == "admin" || c.Value == "superuser"))
+                            || User.Claims.Any(c => c.Type == "IsStaff" && c.Value == "true");
+                            var isSuperuser = User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "superuser")
+                            || User.Claims.Any(c => c.Type == "IsSuperuser" && c.Value == "true");
+                        }
+
+                        @if (isAdmin || isSuperuser)
+                        {
+                            <a href="/Admin/AdminAccount" class="mobile-action-icon-link user-name-link">
+                                <i class="fas fa-cog"></i>
+                                <span class="user-name">@userNameClaim</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <a href="/User/MyAccount" class="mobile-action-icon-link user-name-link">
+                                <i class="fas fa-user-circle"></i>
+                                <span class="user-name">@userNameClaim</span>
+                            </a>
+                        }
+                    </li>
+                    <li class="mobile-action-icon-item">
+                        <form id="logoutFormMobile" method="post" asp-controller="Account" asp-action="Logout">
+                            @Html.AntiForgeryToken()
+                            <a href="#" class="mobile-action-icon-link logout-link">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </a>
+                        </form>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <!-- Нижняя часть с навигацией -->
+        <div class="mobile-menu-bottom">
+            <div class="offcanvas-menu">
+                <ul class="mobile-main-menu">
+                    <li>
+                        <a href="/Home/Index" class="mobile-menu-link active">
+                            <i class="fas fa-home"></i>
+                            <span>Главная</span>
+                        </a>
+                    </li>
+                    <li class="has-submenu">
+                        <a href="#" class="mobile-menu-link">
+                            <i class="fas fa-th-large"></i>
+                            <span>Каталог товаров</span>
+                            <i class="fas fa-chevron-down submenu-toggle"></i>
+                        </a>
+                        <ul class="mobile-sub-menu">
+                            @{
+                                var rootCategories = NBSite.Models.StaticModels.IndexMenuVM.GetRootCategories();
+                                if (rootCategories.Any())
+                                {
+                                    foreach (var category in rootCategories)
+                                    {
+                                        var childCategories = NBSite.Models.StaticModels.IndexMenuVM.GetChildCategories(category.Code!);
+                                        <li class="mobile-mega-menu-item">
+                                            <a href="@Url.Action("ShowProducts", "Shopping", new { categoryAlias = category.Alias })"
+                                               class="mobile-mega-menu-title">
+                                                @category.Name
+                                                @if (childCategories.Any())
+                                                {
+                                                    <i class="fas fa-chevron-right"></i>
+                                                }
+                                            </a>
+                                            @if (childCategories.Any())
+                                            {
+                                                <ul class="mobile-mega-menu-sub">
+                                                    @foreach (var child in childCategories.Take(8))
+                                                    {
+                                                        <li>
+                                                            <a href="@Url.Action("ShowProducts", "Shopping", new { categoryAlias = child.Alias })">
+                                                                @(child.Name!.Length > 25 ? child.Name.Substring(0, 25) + "..." : child.Name)
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    @if (childCategories.Count() > 8)
+                                                    {
+                                                        <li>
+                                                            <a href="@Url.Action("ShowProducts", "Shopping", new { categoryAlias = category.Alias })">
+                                                                <i>Все подкатегории...</i>
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                        </li>
+                                    }
+                                }
+                            }
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="/Shopping/Index?sortOrder=newest" class="mobile-menu-link">
+                            <i class="fas fa-star"></i>
+                            <span>Новинки</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Shopping/Index?discount=true" class="mobile-menu-link">
+                            <i class="fas fa-percentage"></i>
+                            <span>Акции</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Shopping/Index?sortOrder=popular" class="mobile-menu-link">
+                            <i class="fas fa-fire"></i>
+                            <span>Хиты продаж</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Brands" class="mobile-menu-link">
+                            <i class="fas fa-tags"></i>
+                            <span>Бренды</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Delivery" class="mobile-menu-link">
+                            <i class="fas fa-truck"></i>
+                            <span>Доставка</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Guarantee" class="mobile-menu-link">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Гарантия</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/Home/Contacts" class="mobile-menu-link">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Контакты</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Основные стили для мобильного меню */
+    .offcanvas-leftside {
+        background-color: #fff;
+        width: 320px;
+        box-shadow: 5px 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .offcanvas-header {
+        padding: 15px 20px;
+        background-color: #007bff;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .offcanvas-close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s;
+        border-radius: 50%;
+    }
+
+        .offcanvas-close:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+    .offcanvas-mobile-menu-wrapper {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Верхняя часть */
+    .mobile-menu-top {
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #eaeaea;
+        text-align: center;
+    }
+
+        .mobile-menu-top span {
+            font-weight: 600;
+            color: #333;
+            font-size: 16px;
+        }
+
+    /* Центральная часть */
+    .mobile-menu-center {
+        padding: 20px;
+        border-bottom: 1px solid #eaeaea;
+    }
+
+    .mobile-menu-customer-support {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        padding: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+
+    .mobile-menu-customer-support-icon {
+        margin-right: 15px;
+        font-size: 24px;
+        color: #007bff;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
+    }
+
+    .mobile-menu-customer-support-text {
+        display: flex;
+        flex-direction: column;
+    }
+
+        .mobile-menu-customer-support-text span {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+    .mobile-menu-customer-support-text-phone {
+        font-size: 16px;
+        font-weight: 600;
+        color: #007bff;
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+        .mobile-menu-customer-support-text-phone:hover {
+            color: #0056b3;
+        }
+
+    /* Иконки действий */
+    .mobile-action-icon {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        justify-content: space-around;
+    }
+
+    .mobile-action-icon-item {
+        margin: 0 5px;
+    }
+
+    .mobile-action-icon-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        background-color: #f8f9fa;
+        border-radius: 50%;
+        color: #333;
+        text-decoration: none;
+        position: relative;
+        transition: all 0.3s;
+        border: 2px solid transparent;
+    }
+
+        .mobile-action-icon-link:hover {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+            transform: translateY(-2px);
+        }
+
+    .mobile-cart-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: #ff0000;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+    }
+
+    .user-name-link {
+        width: auto;
+        padding: 0 15px;
+        border-radius: 25px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .user-name {
+        font-size: 14px;
+        font-weight: 600;
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    /* Нижняя часть с навигацией */
+    .mobile-menu-bottom {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px 0;
+    }
+
+    .mobile-main-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .mobile-main-menu > li {
+            border-bottom: 1px solid #eaeaea;
+        }
+
+    .mobile-menu-link {
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+        color: #333;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 16px;
+        transition: all 0.3s;
+        position: relative;
+    }
+
+        .mobile-menu-link:hover,
+        .mobile-menu-link.active {
+            background-color: #f8f9fa;
+            color: #007bff;
+        }
+
+        .mobile-menu-link i:first-child {
+            margin-right: 15px;
+            width: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .mobile-menu-link .submenu-toggle {
+            margin-left: auto;
+            font-size: 14px;
+            transition: transform 0.3s;
+        }
+
+    /* Подменю */
+    .has-submenu.active .submenu-toggle {
+        transform: rotate(180deg);
+    }
+
+    .mobile-sub-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        background-color: #f8f9fa;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+    }
+
+    .has-submenu.active .mobile-sub-menu {
+        max-height: 1000px;
+        transition: max-height 0.5s ease-in;
+    }
+
+    .mobile-mega-menu-item {
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+        .mobile-mega-menu-item:last-child {
+            border-bottom: none;
+        }
+
+    .mobile-mega-menu-title {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px 12px 40px;
+        color: #333;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 15px;
+        transition: all 0.3s;
+        justify-content: space-between;
+    }
+
+        .mobile-mega-menu-title:hover {
+            color: #007bff;
+            background-color: rgba(0, 123, 255, 0.05);
+        }
+
+        .mobile-mega-menu-title i {
+            font-size: 12px;
+            color: #999;
+        }
+
+    .mobile-mega-menu-sub {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        background-color: #f0f0f0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-out;
+    }
+
+    .mobile-mega-menu-item.active .mobile-mega-menu-sub {
+        max-height: 1000px;
+        transition: max-height 0.5s ease-in;
+    }
+
+    .mobile-mega-menu-sub li a {
+        display: block;
+        padding: 10px 20px 10px 55px;
+        color: #666;
+        text-decoration: none;
+        font-size: 14px;
+        border-left: 3px solid transparent;
+        transition: all 0.3s;
+    }
+
+        .mobile-mega-menu-sub li a:hover {
+            color: #007bff;
+            background-color: rgba(0, 123, 255, 0.05);
+            border-left-color: #007bff;
+        }
+
+    /* Кнопка прокрутки вверх */
+    .material-scrolltop {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        z-index: 1000;
+        box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+        transition: all 0.3s;
+    }
+
+        .material-scrolltop:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+        }
+
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Обработка клика по ссылке выхода
+        var logoutLink = document.querySelector('.logout-link');
+        if (logoutLink) {
+            logoutLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('logoutFormMobile').submit();
+            });
+        }
+
+        // Обработка открытия/закрытия подменю
+        var submenuToggles = document.querySelectorAll('.submenu-toggle');
+        submenuToggles.forEach(function(toggle) {
+            toggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                var parent = this.closest('.has-submenu');
+                parent.classList.toggle('active');
+
+                // Закрываем другие открытые подменю
+                document.querySelectorAll('.has-submenu').forEach(function(item) {
+                    if (item !== parent) {
+                        item.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // Обработка клика по заголовкам подменю в каталоге
+        var megaMenuTitles = document.querySelectorAll('.mobile-mega-menu-title');
+        megaMenuTitles.forEach(function(title) {
+            title.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                var parent = this.closest('.mobile-mega-menu-item');
+                var isActive = parent.classList.contains('active');
+
+                // Закрываем все подменю
+                document.querySelectorAll('.mobile-mega-menu-item').forEach(function(item) {
+                    item.classList.remove('active');
+                });
+
+                // Открываем текущее, если оно было закрыто
+                if (!isActive) {
+                    parent.classList.add('active');
+                }
+            });
+        });
+
+        // Кнопка прокрутки вверх
+        var scrollTopBtn = document.querySelector('.material-scrolltop');
+        if (scrollTopBtn) {
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    scrollTopBtn.style.display = 'block';
+                } else {
+                    scrollTopBtn.style.display = 'none';
+                }
+            });
+
+            scrollTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // Активный пункт меню на основе текущего URL
+        function setActiveMenuItem() {
+            var currentPath = window.location.pathname;
+            var currentSearch = window.location.search;
+            var menuLinks = document.querySelectorAll('.mobile-menu-link');
+
+            menuLinks.forEach(function(link) {
+                var href = link.getAttribute('href');
+                // Проверяем точное совпадение пути
+                if (href === currentPath || href === currentPath + currentSearch) {
+                    link.classList.add('active');
+
+                    // Если это ссылка на категорию, помечаем родительский элемент
+                    if (href.includes('/Shopping/ShowProducts') || href.includes('/Shopping/Index')) {
+                        var parentSubmenu = link.closest('.has-submenu');
+                        if (parentSubmenu) {
+                            parentSubmenu.classList.add('active');
+                        }
+
+                        var parentMegaItem = link.closest('.mobile-mega-menu-item');
+                        if (parentMegaItem) {
+                            parentMegaItem.classList.add('active');
+                        }
+                    }
+                }
+            });
+        }
+
+        setActiveMenuItem();
+
+        // Закрытие мобильного меню при клике на ссылку
+        var mobileMenuLinks = document.querySelectorAll('.mobile-menu-link, .mobile-mega-menu-title, .mobile-mega-menu-sub a');
+        mobileMenuLinks.forEach(function(link) {
+            link.addEventListener('click', function(e) {
+                // Если это ссылка на страницу, а не toggle
+                if (!this.classList.contains('submenu-toggle') &&
+                    !this.classList.contains('mobile-mega-menu-title')) {
+                    // Даем время на переход и закрываем меню
+                    setTimeout(function() {
+                        var offcanvas = document.getElementById('mobile-menu-offcanvas');
+                        if (offcanvas) {
+                            offcanvas.classList.remove('show');
+                        }
+                    }, 300);
+                }
+            });
+        });
+    });
+</script>

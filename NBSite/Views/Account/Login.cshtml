@@ -1,0 +1,277 @@
+﻿@using NBSite.Models.ViewComponents
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Вход в систему";
+}
+
+<div class="customer_login mt-10">
+    <div class="container">
+        <div class="row d-flex align-items-center justify-content-center">
+            <div class="col-lg-6 col-md-6">
+                <div class="account_form">
+                    <h3>Войти в систему</h3>
+
+                    @if (!ViewData.ModelState.IsValid)
+                    {
+                        <div class="alert alert-danger">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        </div>
+                    }
+
+                    <form method="post" asp-controller="Account" asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]">
+                        @Html.AntiForgeryToken()
+
+                        <div class="default-form-box mb-20">
+                            <label asp-for="EmailOrUsername">Email или логин <span>*</span></label>
+                            <input asp-for="EmailOrUsername" type="text" class="form-control" placeholder="Введите email или логин">
+                            <span asp-validation-for="EmailOrUsername" class="text-danger"></span>
+                        </div>
+
+                        <div class="default-form-box mb-20">
+                            <label asp-for="Password">Пароль <span>*</span></label>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Введите пароль">
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <div class="default-form-box mb-20">
+                            <label class="checkbox-default" asp-for="RememberMe">
+                                <input asp-for="RememberMe" type="checkbox">
+                                <span>Запомнить меня</span>
+                            </label>
+                        </div>
+
+                        <div class="login_submit d-flex flex-column">
+                            <button class="btn btn-primary btn-lg mb-3" type="submit">
+                                <i class="fas fa-sign-in-alt me-2"></i>Войти
+                            </button>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a asp-controller="Account" asp-action="ForgotPassword" class="text-decoration-none">
+                                    <i class="fas fa-key me-1"></i>Забыли пароль?
+                                </a>
+                                <a asp-controller="Account" asp-action="Register" class="text-decoration-none">
+                                    <i class="fas fa-user-plus me-1"></i>Зарегистрироваться
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .fas{
+            margin-right:5px;
+        }
+
+        .customer_login {
+            min-height: calc(100vh - 200px);
+            display: flex;
+            align-items: center;
+        }
+
+        .account_form {
+            background: white;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e9ecef;
+        }
+
+            .account_form h3 {
+                font-size: 1.8rem;
+                font-weight: 600;
+                color: #333;
+                margin-bottom: 30px;
+                text-align: center;
+                padding-bottom: 15px;
+                border-bottom: 2px solid #007bff;
+            }
+
+        .default-form-box {
+            margin-bottom: 1.5rem;
+        }
+
+            .default-form-box label {
+                display: block;
+                font-weight: 500;
+                margin-bottom: 0.5rem;
+                color: #495057;
+            }
+
+                .default-form-box label span {
+                    color: #dc3545;
+                }
+
+            .default-form-box input[type="text"],
+            .default-form-box input[type="password"],
+            .default-form-box input[type="email"] {
+                width: 100%;
+                padding: 0.75rem 1rem;
+                border: 1px solid #ced4da;
+                border-radius: 4px;
+                font-size: 1rem;
+                transition: border-color 0.3s, box-shadow 0.3s;
+            }
+
+            .default-form-box input:focus {
+                border-color: #007bff;
+                box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+                outline: none;
+            }
+
+        .text-danger {
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+
+        .checkbox-default {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+            .checkbox-default input[type="checkbox"] {
+                margin-right: 10px;
+                width: 18px;
+                height: 18px;
+                cursor: pointer;
+            }
+
+            .checkbox-default span {
+                font-size: 0.9rem;
+                color: #495057;
+            }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 0.75rem 2rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                border-color: #0056b3;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+
+        .login_submit a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+            .login_submit a:hover {
+                color: #0056b3;
+                text-decoration: underline;
+            }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+            padding: 0.75rem 1.25rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .border-top {
+            border-top: 1px solid #e9ecef !important;
+        }
+
+        .btn-outline-primary {
+            color: #007bff;
+            border-color: #007bff;
+        }
+
+            .btn-outline-primary:hover {
+                background-color: #007bff;
+                border-color: #007bff;
+                color: white;
+            }
+
+        /* Адаптивность */
+        @@media (max-width: 768px) {
+            .account_form {
+                padding: 25px;
+                margin: 0 15px;
+            }
+
+                .account_form h3 {
+                    font-size: 1.5rem;
+                }
+
+            .login_submit .d-flex {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        // Автофокус на первое поле при загрузке
+        document.addEventListener('DOMContentLoaded', function() {
+            var emailInput = document.getElementById('EmailOrUsername');
+            if (emailInput) {
+                emailInput.focus();
+            }
+        });
+
+        // Показать/скрыть пароль (опционально)
+        function togglePassword() {
+            var passwordInput = document.getElementById('Password');
+            var toggleIcon = document.getElementById('togglePasswordIcon');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        }
+
+        // Если нужно добавить иконку показа пароля
+        function addPasswordToggle() {
+            var passwordField = document.getElementById('Password');
+            if (passwordField) {
+                var parent = passwordField.parentElement;
+                parent.style.position = 'relative';
+
+                var toggleButton = document.createElement('button');
+                toggleButton.type = 'button';
+                toggleButton.className = 'btn btn-outline-secondary';
+                toggleButton.style.position = 'absolute';
+                toggleButton.style.right = '10px';
+                toggleButton.style.top = '75%';
+                toggleButton.style.transform = 'translateY(-50%)';
+                toggleButton.style.border = 'none';
+                toggleButton.style.background = 'transparent';
+                toggleButton.onclick = togglePassword;
+
+                var icon = document.createElement('i');
+                icon.id = 'togglePasswordIcon';
+                icon.className = 'fas fa-eye';
+
+                toggleButton.appendChild(icon);
+                parent.appendChild(toggleButton);
+
+                // Добавить padding справа для input
+                passwordField.style.paddingRight = '40px';
+            }
+        }
+        document.addEventListener('DOMContentLoaded', addPasswordToggle);
+    </script>
+}

@@ -1,0 +1,96 @@
+﻿@using NBSite.Areas.Admin.Models
+@model NewsEditVM
+@{
+    ViewData["Title"] = "Создание новости";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Create" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Alias" class="form-label"></label>
+                <input asp-for="Alias" class="form-control" />
+                <small class="form-text text-muted">Если не заполнять, сгенерируется автоматически из названия.</small>
+                <span asp-validation-for="Alias" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Date" class="form-label"></label>
+                <input asp-for="Date" class="form-control" type="date" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Introtext" class="form-label"></label>
+                <textarea asp-for="Introtext" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Introtext" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Content" class="form-label"></label>
+                <textarea asp-for="Content" class="form-control" rows="6"></textarea>
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Image" class="form-label"></label>
+                <input type="file" name="imageFile" class="form-control" accept="image/*" />
+                <small class="form-text text-muted">Загрузите изображение (необязательно)</small>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="MetaTitle" class="form-label"></label>
+                        <input asp-for="MetaTitle" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label asp-for="Sort" class="form-label"></label>
+                        <input asp-for="Sort" class="form-control" />
+                        <span asp-validation-for="Sort" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="MetaDescription" class="form-label"></label>
+                <textarea asp-for="MetaDescription" class="form-control" rows="2"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="MetaKeywords" class="form-label"></label>
+                <input asp-for="MetaKeywords" class="form-control" />
+            </div>
+
+            <div class="mb-3 form-check">
+                <input asp-for="Active" class="form-check-input" />
+                <label asp-for="Active" class="form-check-label"></label>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Создать" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("ValidationScriptsPartial");
+    }
+}

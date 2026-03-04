@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/Элементы решения/">
+    <File Path=".env" />
+    <File Path="nginx.conf" />
+  </Folder>
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
+  <Project Path="Domain/Domain.csproj" />
+  <Project Path="Exporter/Exporter.csproj" Id="d4b89aab-7cd5-43bf-898f-778465d5b45b" />
+  <Project Path="Importer/Importer.csproj" Id="7c40a3dc-c1d7-4748-a86f-df827e56dc8c" />
+  <Project Path="NBSite/NBSite.csproj" />
+</Solution>
