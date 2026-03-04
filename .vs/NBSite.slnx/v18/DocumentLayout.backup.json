@@ -3,12 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{48F5E42B-220B-06E1-EF7D-634A1588BC5E}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{48F5E42B-220B-06E1-EF7D-634A1588BC5E}|C:\\Users\\n.kleba\\source\\repos\\NBSite\\Dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{48F5E42B-220B-06E1-EF7D-634A1588BC5E}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{48F5E42B-220B-06E1-EF7D-634A1588BC5E}|solutionrelative:Dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{81DDED9D-158B-E303-5F62-77A2896D2A5A}|docker-compose.dcproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\docker-compose.yml||{06C066C6-04A2-4E5D-8202-439FD4234EF1}",
       "RelativeMoniker": "D:0:0:{81DDED9D-158B-E303-5F62-77A2896D2A5A}|docker-compose.dcproj|solutionrelative:docker-compose.yml||{06C066C6-04A2-4E5D-8202-439FD4234EF1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{81DDED9D-158B-E303-5F62-77A2896D2A5A}|docker-compose.dcproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\docker-compose.override.yml||{06C066C6-04A2-4E5D-8202-439FD4234EF1}",
+      "RelativeMoniker": "D:0:0:{81DDED9D-158B-E303-5F62-77A2896D2A5A}|docker-compose.dcproj|solutionrelative:docker-compose.override.yml||{06C066C6-04A2-4E5D-8202-439FD4234EF1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{48F5E42B-220B-06E1-EF7D-634A1588BC5E}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{48F5E42B-220B-06E1-EF7D-634A1588BC5E}|C:\\Users\\n.kleba\\source\\repos\\NBSite\\Dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{48F5E42B-220B-06E1-EF7D-634A1588BC5E}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{48F5E42B-220B-06E1-EF7D-634A1588BC5E}|solutionrelative:Dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\views\\news\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -34,41 +38,54 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 3,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "docker-compose.override.yml",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\docker-compose.override.yml",
+              "RelativeDocumentMoniker": "docker-compose.override.yml",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\docker-compose.override.yml",
+              "RelativeToolTip": "docker-compose.override.yml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-03-04T11:14:02.316Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "Dockerfile",
               "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Dockerfile",
               "RelativeDocumentMoniker": "Dockerfile",
               "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Dockerfile",
               "RelativeToolTip": "Dockerfile",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2026-03-04T11:08:54.255Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "docker-compose.yml",
               "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\docker-compose.yml",
               "RelativeDocumentMoniker": "docker-compose.yml",
               "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\docker-compose.yml",
               "RelativeToolTip": "docker-compose.yml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAATAAAAAAAAAA==",
+              "ViewState": "AgIAABsAAAAAAAAAAAAAACUAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2026-03-04T10:59:47.659Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Details.cshtml",
               "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\News\\Details.cshtml",
               "RelativeDocumentMoniker": "NBSite\\Views\\News\\Details.cshtml",
@@ -80,7 +97,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\News\\Index.cshtml",
               "RelativeDocumentMoniker": "NBSite\\Views\\News\\Index.cshtml",
@@ -92,7 +109,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "NewsController.cs",
               "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Controllers\\NewsController.cs",
               "RelativeDocumentMoniker": "NBSite\\Controllers\\NewsController.cs",
@@ -104,7 +121,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Index.cshtml",
               "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Home\\Index.cshtml",
               "RelativeDocumentMoniker": "NBSite\\Views\\Home\\Index.cshtml",
