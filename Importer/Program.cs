@@ -20,7 +20,6 @@ namespace Importer
                 .ConfigureServices((context, services) =>
                 {
                     var connectionString = context.Configuration.GetConnectionString("NbshopDatabase");
-                    Console.WriteLine($"Using connection string: {connectionString}");
                     services.AddDbContext<NbshopContext>(options =>
                         options.UseNpgsql(connectionString));
 
@@ -32,7 +31,7 @@ namespace Importer
                 {
                     logging.ClearProviders();
                     logging.AddConsole();
-                    logging.SetMinimumLevel(LogLevel.Warning);
+                    logging.AddFilter(level => level >= LogLevel.Warning);
                 })
                 .Build();
 
