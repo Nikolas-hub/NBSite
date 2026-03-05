@@ -3,8 +3,16 @@
   "WorkspaceRootPath": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{7C40A3DC-C1D7-4748-A86F-DF827E56DC8C}|Importer\\Importer.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\importer\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{7C40A3DC-C1D7-4748-A86F-DF827E56DC8C}|Importer\\Importer.csproj|solutionrelative:importer\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{7C40A3DC-C1D7-4748-A86F-DF827E56DC8C}|Importer\\Importer.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\importer\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7C40A3DC-C1D7-4748-A86F-DF827E56DC8C}|Importer\\Importer.csproj|solutionrelative:importer\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7C40A3DC-C1D7-4748-A86F-DF827E56DC8C}|Importer\\Importer.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\importer\\importer.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{7C40A3DC-C1D7-4748-A86F-DF827E56DC8C}|Importer\\Importer.csproj|solutionrelative:importer\\importer.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{7C40A3DC-C1D7-4748-A86F-DF827E56DC8C}|Importer\\Importer.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\importer\\dataimporter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -21,33 +29,60 @@
           "SelectedChildIndex": 1,
           "Children": [
             {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Importer",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\Importer.csproj",
+              "RelativeDocumentMoniker": "Importer\\Importer.csproj",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\Importer.csproj",
+              "RelativeToolTip": "Importer\\Importer.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-03-05T06:35:38.285Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\appsettings.json",
+              "RelativeDocumentMoniker": "Importer\\appsettings.json",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\appsettings.json",
+              "RelativeToolTip": "Importer\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-03-05T06:29:02.295Z",
+              "EditorCaption": ""
+            },
+            {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\Program.cs",
               "RelativeDocumentMoniker": "Importer\\Program.cs",
               "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\Program.cs",
               "RelativeToolTip": "Importer\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAA9AAAAAAAAAA==",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAQwB8AAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-05T05:26:01.224Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "DataImporter.cs",
               "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\DataImporter.cs",
               "RelativeDocumentMoniker": "Importer\\DataImporter.cs",
               "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\DataImporter.cs",
               "RelativeToolTip": "Importer\\DataImporter.cs",
-              "ViewState": "AgIAABMAAAAAAAAAAAAgwCEAAAA9AAAAAAAAAA==",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAwwCYAAAA1AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-05T05:19:43.229Z"
+              "WhenOpened": "2026-03-05T05:19:43.229Z",
+              "EditorCaption": ""
             }
           ]
         }

@@ -31,7 +31,7 @@ namespace Importer
                 {
                     logging.ClearProviders();
                     logging.AddConsole();
-                    logging.AddFilter(level => level >= LogLevel.Warning);
+                    logging.SetMinimumLevel(LogLevel.Warning);
                 })
                 .Build();
 
