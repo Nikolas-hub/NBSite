@@ -32,6 +32,7 @@ namespace Importer
                 {
                     logging.ClearProviders();
                     logging.AddConsole();
+                    logging.SetMinimumLevel(LogLevel.Warning);
                 })
                 .Build();
 
