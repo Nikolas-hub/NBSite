@@ -31,6 +31,8 @@ namespace Importer
                 {
                     logging.ClearProviders();
                     logging.AddConsole();
+                    logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
+                    logging.AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning);
                     logging.SetMinimumLevel(LogLevel.Warning);
                 })
                 .Build();
