@@ -31,9 +31,10 @@ namespace Importer
                 {
                     logging.ClearProviders();
                     logging.AddConsole();
+                    logging.SetMinimumLevel(LogLevel.Warning);
+                    // Явно для EF Core, если вдруг не сработает общий
                     logging.AddFilter("Microsoft.EntityFrameworkCore.Database.Command", LogLevel.Warning);
                     logging.AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning);
-                    logging.SetMinimumLevel(LogLevel.Warning);
                 })
                 .Build();
 
