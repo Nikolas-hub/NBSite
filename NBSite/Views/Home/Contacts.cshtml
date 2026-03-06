@@ -149,6 +149,10 @@
         overflow: hidden;
         box-shadow: 0 5px 15px rgba(0,0,0,.1);
     }
+
+    .contact-text a,p{
+        font-size: 16px !important
+    }
 </style>
 
 <div class="contacts-section">
@@ -160,19 +164,19 @@
                     <h3>Контактная информация</h3>
                     <div class="contact-item">
                         <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
-                        <div class="contact-text"><strong>Телефон:</strong> 8 (800) 123-45-67</div>
+                        <div class="contact-text"><strong>Телефон:</strong> <a href="tel:@AppConfig.Company.CompanyPhoneShort">@AppConfig.Company.CompanyPhone</a></div>
                     </div>
                     <div class="contact-item">
                         <div class="contact-icon"><i class="fas fa-clock"></i></div>
-                        <div class="contact-text"><strong>Режим работы:</strong> Пн-Пт: 9:00-19:00</div>
+                        <div class="contact-text"><strong>Режим работы:</strong> Пн-Пт: 09:00-18:00</div>
                     </div>
                     <div class="contact-item">
                         <div class="contact-icon"><i class="fas fa-envelope"></i></div>
-                        <div class="contact-text"><strong>Email:</strong> test@fronb.ru</div>
+                        <div class="contact-text"><strong>Email:</strong> <a href="mailto:@AppConfig.Company.CompanyEmail">@AppConfig.Company.CompanyEmail</a></div>
                     </div>
                     <div class="contact-item">
                         <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
-                        <div class="contact-text"><strong>Адрес:</strong> г. Екатеринбург, ул. Гурзуфская,55</div>
+                        <div class="contact-text"><strong>Адрес:</strong> <p>@AppConfig.Footer.Address</p></div>
                     </div>
                 </div>
             </div>

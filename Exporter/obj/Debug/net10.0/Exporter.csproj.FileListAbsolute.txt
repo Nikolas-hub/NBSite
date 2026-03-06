@@ -55,3 +55,4 @@ C:\Users\n.kleba\source\repos\NBSite\Exporter\obj\Debug\net10.0\refint\Exporter.
 C:\Users\n.kleba\source\repos\NBSite\Exporter\obj\Debug\net10.0\Exporter.pdb
 C:\Users\n.kleba\source\repos\NBSite\Exporter\obj\Debug\net10.0\Exporter.genruntimeconfig.cache
 C:\Users\n.kleba\source\repos\NBSite\Exporter\obj\Debug\net10.0\ref\Exporter.dll
+C:\Users\n.kleba\source\repos\NBSite\Exporter\obj\Debug\net10.0\Exporter.sourcelink.json

@@ -67,8 +67,8 @@ namespace NBSite.Infrastructure
                             <h2>Здравствуйте!</h2>
                             <p>Товар <strong>{product.Name}</strong> снова появился в наличии.</p>
                             <p>Вы можете приобрести его по ссылке:</p>
-                            <p><a href='{appConfig.Site.Url}/shopping/product/{product.Alias}'>{appConfig.Site.Url}/shopping/product/{product.Alias}</a></p>
-                            <p>С уважением, интернет-магазин.</p>
+                            <p><a href='{appConfig.Site.Url}/Shopping/ShowProduct/{product.Alias}'>{appConfig.Site.Url}/Shopping/ShowProduct/{product.Alias}</a></p>
+                            <p>С уважением, Фармотдел Новой Больницы.</p>
                         ";
 
                             await emailSender.SendEmailAsync(email, subject, body, true);

@@ -68,7 +68,7 @@
 
                 <div class="mb-3">
                     <label asp-for="CityId" class="form-label"></label>
-                    <select asp-for="CityId" class="form-select" asp-items="@(new SelectList(ViewBag.Cities, "Id", "Name", Model.CityId))">
+                    <select asp-for="CityId" class="form-control" asp-items="ViewBag.Cities">
                         <option value="">-- Выберите город --</option>
                     </select>
                 </div>

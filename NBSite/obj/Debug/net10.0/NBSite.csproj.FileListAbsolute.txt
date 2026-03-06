@@ -242,5 +242,6 @@ C:\Users\n.kleba\source\repos\NBSite\NBSite\obj\Debug\net10.0\staticwebassets.up
 C:\Users\n.kleba\source\repos\NBSite\NBSite\bin\Debug\net10.0\BouncyCastle.Cryptography.dll
 C:\Users\n.kleba\source\repos\NBSite\NBSite\bin\Debug\net10.0\MailKit.dll
 C:\Users\n.kleba\source\repos\NBSite\NBSite\bin\Debug\net10.0\MimeKit.dll
-C:\Users\n.kleba\source\repos\NBSite\NBSite\obj\Debug\net10.0\compressed\ebv0pllldz-{0}-zbe624zl3p-zbe624zl3p.gz
 C:\Users\n.kleba\source\repos\NBSite\NBSite\obj\Debug\net10.0\compressed\pgid2bnclc-{0}-yku0xowin8-yku0xowin8.gz
+C:\Users\n.kleba\source\repos\NBSite\NBSite\obj\Debug\net10.0\NBSite.sourcelink.json
+C:\Users\n.kleba\source\repos\NBSite\NBSite\obj\Debug\net10.0\compressed\ebv0pllldz-{0}-strcid614z-strcid614z.gz

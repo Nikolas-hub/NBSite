@@ -425,6 +425,23 @@
 
 @section Styles {
     <style>
+        /* Принудительно делаем строку однострочной и центрируем содержимое */
+        .sidebar-single-widget .filter-type-select li label.checkbox-default {
+            display: flex;
+            align-items: center;
+            justify-content: center; /* выравнивание по центру */
+            white-space: nowrap; /* запрет переноса текста */
+            width: 100%; /* растягиваем на всю ширину родителя */
+            gap: 8px; /* отступ между чекбоксом и текстом (при желании) */
+        }
+
+        /* Если на мобильных устройствах текст всё ещё не помещается, можно уменьшить шрифт */
+        @@media (max-width: 768px) {
+            .sidebar-single-widget .filter-type-select li label.checkbox-default span {
+                font-size: 0.8rem;
+            }
+        }
+
         .product-card {
             display: flex !important;
             flex-direction: column !important;
@@ -462,7 +479,6 @@
 
         /* Группа категорий (details) */
         .category-group {
-            margin-bottom: 8px;
             border: none;
         }
 
@@ -485,7 +501,6 @@
             .category-summary::before {
                 content: '▶';
                 font-size: 12px;
-                margin-right: 8px;
                 color: #007bff;
                 transition: transform 0.2s;
                 display: inline-block;
@@ -499,7 +514,7 @@
 
         /* Контейнер дочерних категорий */
         .category-children {
-            margin-left: 15px; /* отступ слева для вложенности */
+ /* отступ слева для вложенности */
             padding-left: 8px;
             border-left: 1px dashed #dee2e6;
         }
@@ -522,7 +537,6 @@
                 flex-shrink: 0;
                 width: 18px;
                 height: 18px;
-                margin: 2px 8px 0 0;
                 accent-color: #007bff; /* цвет галочки */
                 cursor: pointer;
             }
@@ -699,7 +713,6 @@
 
             .radio-default input[type="radio"],
             .checkbox-default input[type="checkbox"] {
-                margin-right: 10px;
                 cursor: pointer;
             }
 

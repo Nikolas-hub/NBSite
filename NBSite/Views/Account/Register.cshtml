@@ -62,7 +62,7 @@
                         <!-- Поле Город -->
                         <div class="default-form-box mb-20">
                             <label asp-for="CityId">Город</label>
-                            <select asp-for="CityId" class="form-control" asp-items="@(new SelectList(ViewBag.Cities, "Id", "Name"))">
+                            <select asp-for="CityId" class="form-control" asp-items="ViewBag.Cities">
                                 <option value="">-- Выберите город --</option>
                             </select>
                             <span asp-validation-for="CityId" class="text-danger"></span>
@@ -105,6 +105,9 @@
 
 @section Styles {
     <style>
+        .fas{
+            margin-right: 5px;
+        }
         .customer_login {
             min-height: calc(100vh - 200px);
             display: flex;
@@ -281,7 +284,7 @@
                 toggleButton.className = 'btn btn-outline-secondary';
                 toggleButton.style.position = 'absolute';
                 toggleButton.style.right = '10px';
-                toggleButton.style.top = '50%';
+                toggleButton.style.top = '75%';
                 toggleButton.style.transform = 'translateY(-50%)';
                 toggleButton.style.border = 'none';
                 toggleButton.style.background = 'transparent';
@@ -309,7 +312,7 @@
                 toggleButton.className = 'btn btn-outline-secondary';
                 toggleButton.style.position = 'absolute';
                 toggleButton.style.right = '10px';
-                toggleButton.style.top = '50%';
+                toggleButton.style.top = '75%';
                 toggleButton.style.transform = 'translateY(-50%)';
                 toggleButton.style.border = 'none';
                 toggleButton.style.background = 'transparent';

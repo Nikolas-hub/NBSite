@@ -3,24 +3,24 @@
   "WorkspaceRootPath": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\bin\\Debug\\net10.0\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Importer\\bin\\Debug\\net10.0\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{48F5E42B-220B-06E1-EF7D-634A1588BC5E}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{48F5E42B-220B-06E1-EF7D-634A1588BC5E}|C:\\Users\\n.kleba\\source\\repos\\NBSite\\Dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{48F5E42B-220B-06E1-EF7D-634A1588BC5E}|\u042D\u043B\u0435\u043C\u0435\u043D\u0442\u044B \u0440\u0435\u0448\u0435\u043D\u0438\u044F{48F5E42B-220B-06E1-EF7D-634A1588BC5E}|solutionrelative:Dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7C40A3DC-C1D7-4748-A86F-DF827E56DC8C}|Importer\\Importer.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\importer\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{7C40A3DC-C1D7-4748-A86F-DF827E56DC8C}|Importer\\Importer.csproj|solutionrelative:importer\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7C40A3DC-C1D7-4748-A86F-DF827E56DC8C}|Importer\\Importer.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\importer\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7C40A3DC-C1D7-4748-A86F-DF827E56DC8C}|Importer\\Importer.csproj|solutionrelative:importer\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7C40A3DC-C1D7-4748-A86F-DF827E56DC8C}|Importer\\Importer.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\importer\\importer.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{7C40A3DC-C1D7-4748-A86F-DF827E56DC8C}|Importer\\Importer.csproj|solutionrelative:importer\\importer.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\views\\home\\contacts.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\views\\home\\contacts.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{7C40A3DC-C1D7-4748-A86F-DF827E56DC8C}|Importer\\Importer.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\importer\\dataimporter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{7C40A3DC-C1D7-4748-A86F-DF827E56DC8C}|Importer\\Importer.csproj|solutionrelative:importer\\dataimporter.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\views\\shared\\footerpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\views\\shared\\footerpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,75 +30,76 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Dockerfile",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Dockerfile",
+              "RelativeDocumentMoniker": "Dockerfile",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Dockerfile",
+              "RelativeToolTip": "Dockerfile",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-06T06:54:52.34Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Dockerfile",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Dockerfile",
+              "RelativeDocumentMoniker": "NBSite\\Dockerfile",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Dockerfile",
+              "RelativeToolTip": "NBSite\\Dockerfile",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2026-03-06T06:54:22.535Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\bin\\Debug\\net10.0\\appsettings.json",
-              "RelativeDocumentMoniker": "Importer\\bin\\Debug\\net10.0\\appsettings.json",
-              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\bin\\Debug\\net10.0\\appsettings.json",
-              "RelativeToolTip": "Importer\\bin\\Debug\\net10.0\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-03-05T06:59:11.324Z",
+              "DocumentIndex": 2,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "NBSite\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "NBSite\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-06T06:49:58.646Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Importer.csproj",
-              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\Importer.csproj",
-              "RelativeDocumentMoniker": "Importer\\Importer.csproj",
-              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\Importer.csproj",
-              "RelativeToolTip": "Importer\\Importer.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-03-05T06:35:38.285Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\appsettings.json",
-              "RelativeDocumentMoniker": "Importer\\appsettings.json",
-              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\appsettings.json",
-              "RelativeToolTip": "Importer\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAEAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-03-05T06:29:02.295Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\Program.cs",
-              "RelativeDocumentMoniker": "Importer\\Program.cs",
-              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\Program.cs",
-              "RelativeToolTip": "Importer\\Program.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAwwB8AAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-05T05:26:01.224Z",
+              "Title": "Contacts.cshtml",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Home\\Contacts.cshtml",
+              "RelativeDocumentMoniker": "NBSite\\Views\\Home\\Contacts.cshtml",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Home\\Contacts.cshtml",
+              "RelativeToolTip": "NBSite\\Views\\Home\\Contacts.cshtml",
+              "ViewState": "AgIAAJkAAAAAAAAAAAAlwJ8AAAAzAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-06T06:27:13.695Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "DataImporter.cs",
-              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\DataImporter.cs",
-              "RelativeDocumentMoniker": "Importer\\DataImporter.cs",
-              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\Importer\\DataImporter.cs",
-              "RelativeToolTip": "Importer\\DataImporter.cs",
-              "ViewState": "AgIAAD4AAAAAAAAAAAAwwCYAAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-05T05:19:43.229Z"
+              "Title": "FooterPartial.cshtml",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Shared\\FooterPartial.cshtml",
+              "RelativeDocumentMoniker": "NBSite\\Views\\Shared\\FooterPartial.cshtml",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Shared\\FooterPartial.cshtml",
+              "RelativeToolTip": "NBSite\\Views\\Shared\\FooterPartial.cshtml",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAlwF8AAAAkAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-06T06:26:49.888Z",
+              "EditorCaption": ""
             }
           ]
         }

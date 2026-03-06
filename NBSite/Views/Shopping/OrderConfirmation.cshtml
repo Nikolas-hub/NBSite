@@ -5,94 +5,124 @@
     ViewData["Title"] = $"Заказ №{Model.Id}";
 }
 
-<h1>@ViewData["Title"]</h1>
+<!-- Основной контейнер: ограничивает ширину и добавляет отступы -->
+<div class="container mt-4">
 
-<div class="row">
-    <div class="col-md-6">
-        <h4>Информация о заказе</h4>
-        <dl class="row">
-            <dt class="col-sm-4">Дата:</dt>
-            <dd class="col-sm-8">@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</dd>
+    <h1 class="mb-4">@ViewData["Title"]</h1>
 
-            <dt class="col-sm-4">Статус:</dt>
-            <dd class="col-sm-8">@Model.Status</dd>
+    <!-- Информационные блоки в виде карточек -->
+    <div class="row g-4 mb-4">
+        <!-- Блок с общей информацией -->
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Информация о заказе</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Дата:</dt>
+                        <dd class="col-sm-8">@Model.CreatedAt.ToString("dd.MM.yyyy HH:mm")</dd>
 
-            <dt class="col-sm-4">Получатель:</dt>
-            <dd class="col-sm-8">@Model.Reciever</dd>
+                        <dt class="col-sm-4">Получатель:</dt>
+                        <dd class="col-sm-8">@Model.Reciever</dd>
 
-            <dt class="col-sm-4">Email:</dt>
-            <dd class="col-sm-8">@Model.Email</dd>
+                        <dt class="col-sm-4">Email:</dt>
+                        <dd class="col-sm-8">@Model.Email</dd>
 
-            <dt class="col-sm-4">Телефон:</dt>
-            <dd class="col-sm-8">@Model.Phone</dd>
+                        <dt class="col-sm-4">Телефон:</dt>
+                        <dd class="col-sm-8">@Model.Phone</dd>
 
-            @if (!string.IsNullOrEmpty(Model.Comment))
-            {
-                <dt class="col-sm-4">Комментарий:</dt>
-                <dd class="col-sm-8">@Model.Comment</dd>
-            }
-        </dl>
+                        @if (!string.IsNullOrEmpty(Model.Comment))
+                        {
+                            <dt class="col-sm-4">Комментарий:</dt>
+                            <dd class="col-sm-8">@Model.Comment</dd>
+                        }
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <!-- Блок с доставкой и оплатой -->
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Доставка и оплата</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Способ доставки:</dt>
+                        <dd class="col-sm-8">@(Model.Delivery?.Name ?? "Не указан")</dd>
+
+                        <dt class="col-sm-4">Способ оплаты:</dt>
+                        <dd class="col-sm-8">@(Model.Payment?.Name ?? "Не указан")</dd>
+
+                        <dt class="col-sm-4">Город доставки:</dt>
+                        <dd class="col-sm-8">@(Model.City?.Name ?? "Не указан")</dd>
+
+                        @if (Model.Coupon != null)
+                        {
+                            <dt class="col-sm-4">Применён купон:</dt>
+                            <dd class="col-sm-8">
+                                <span class="badge bg-info text-dark">@Model.Coupon.Code</span>
+                            </dd>
+                        }
+                    </dl>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-md-6">
-        <h4>Доставка и оплата</h4>
-        <dl class="row">
-            <dt class="col-sm-4">Способ доставки:</dt>
-            <dd class="col-sm-8">@(Model.Delivery?.Name ?? "Не указан")</dd>
 
-            <dt class="col-sm-4">Способ оплаты:</dt>
-            <dd class="col-sm-8">@(Model.Payment?.Name ?? "Не указан")</dd>
+    <!-- Состав заказа -->
+    <h4 class="mb-3">Состав заказа</h4>
 
-            <dt class="col-sm-4">Город доставки:</dt>
-            <dd class="col-sm-8">@(Model.City?.Name ?? "Не указан")</dd>
-
-            @if (Model.Coupon != null)
-            {
-                <dt class="col-sm-4">Применён купон:</dt>
-                <dd class="col-sm-8">@Model.Coupon.Code</dd>
-            }
-        </dl>
+    <!-- Адаптивная таблица с улучшенным оформлением -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Товар</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th>Сумма</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CatalogOrderproducts)
+                {
+                    var product = item.Product;
+                    <tr>
+                        <td>
+                            @if (product != null)
+                            {
+                                <a asp-action="ShowProduct" asp-controller="Shopping" asp-route-id="@product.Alias" class="text-decoration-none">
+                                    @product.Name
+                                </a>
+                            }
+                            else
+                            {
+                                <span class="text-muted">Товар удалён</span>
+                            }
+                        </td>
+                        <td class="text-nowrap">@item.Price.ToString("C")</td>
+                        <td>@item.Quantity</td>
+                        <td class="text-nowrap fw-bold">@((item.Price * item.Quantity).ToString("C"))</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot class="table-light">
+                <tr>
+                    <th colspan="3" class="text-end">Итого:</th>
+                    <th class="text-nowrap">@Model.CatalogOrderproducts.Sum(i => i.Price * i.Quantity).ToString("C")</th>
+                </tr>
+            </tfoot>
+        </table>
     </div>
-</div>
 
-<h4 class="mt-4">Состав заказа</h4>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Товар</th>
-            <th>Цена</th>
-            <th>Количество</th>
-            <th>Сумма</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.CatalogOrderproducts)
-        {
-            var product = item.Product;
-            <tr>
-                <td>
-                    @if (product != null)
-                    {
-                        <a asp-action="ShowProduct" asp-controller="Shopping" asp-route-id="@product.Alias">@product.Name</a>
-                    }
-                    else
-                    {
-                        <span>Товар удалён</span>
-                    }
-                </td>
-                <td>@item.Price.ToString("C")</td>
-                <td>@item.Quantity</td>
-                <td>@((item.Price * item.Quantity).ToString("C"))</td>
-            </tr>
-        }
-    </tbody>
-    <tfoot>
-        <tr>
-            <th colspan="3" class="text-end">Итого:</th>
-            <th>@Model.CatalogOrderproducts.Sum(i => i.Price * i.Quantity).ToString("C")</th>
-        </tr>
-    </tfoot>
-</table>
+    <!-- Кнопка возврата -->
+    <div class="mt-4">
+        <a asp-action="OrderHistory" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Назад к истории
+        </a>
+    </div>
 
-<div>
-    <a asp-action="OrderHistory" class="btn btn-secondary">Назад к истории</a>
 </div>

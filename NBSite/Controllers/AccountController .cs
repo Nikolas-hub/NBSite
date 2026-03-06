@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Domain.Entities;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Domain.Entities;
-using NBSite.Models.ViewComponents;
 using NBSite.Infrastructure;
+using NBSite.Models.ViewComponents;
 using System.Security.Claims;
 
 namespace NBSite.Controllers
@@ -16,7 +17,7 @@ namespace NBSite.Controllers
         private readonly IUserService _userService;
         private readonly IAuthService _authService;
         private readonly IPasswordHasher _passwordHasher;
-        private readonly IEmailSender _emailSender;      
+        private readonly IEmailSender _emailSender;
         private readonly AppConfig _appConfig;
 
         public AccountController(
@@ -24,8 +25,8 @@ namespace NBSite.Controllers
             IUserService userService,
             IAuthService authService,
             IPasswordHasher passwordHasher,
-            IEmailSender emailSender,                     
-            AppConfig appConfig) 
+            IEmailSender emailSender,
+            AppConfig appConfig)
         {
             _db = db;
             _userService = userService;
@@ -40,10 +41,11 @@ namespace NBSite.Controllers
         public async Task<IActionResult> Register()
         {
             // Загружаем активные города для выпадающего списка
-            ViewBag.Cities = await _db.ReferencesCities
+            var cities = await _db.ReferencesCities
                 .Where(c => c.Active)
                 .OrderBy(c => c.Name)
                 .ToListAsync();
+            ViewBag.Cities = new SelectList(cities, "Id", "Name");
             return View();
         }
 
@@ -143,10 +145,11 @@ namespace NBSite.Controllers
             }
             catch (Exception)
             {
-                ViewBag.Cities = await _db.ReferencesCities
+                var cities = await _db.ReferencesCities
                     .Where(c => c.Active)
                     .OrderBy(c => c.Name)
                     .ToListAsync();
+                ViewBag.Cities = new SelectList(cities, "Id", "Name");
                 ModelState.AddModelError("", "Произошла ошибка при регистрации. Пожалуйста, попробуйте позже.");
                 return View(model);
             }
@@ -263,7 +266,7 @@ namespace NBSite.Controllers
             <p>Для восстановления пароля перейдите по ссылке:</p>
             <p><a href='{resetLink}'>{resetLink}</a></p>
             <p>Если вы не запрашивали восстановление пароля, просто проигнорируйте это письмо.</p>
-            <p>С уважением, интернет-магазин.</p>
+            <p>С уважением, Фармотдел Новой Больницы.</p>
         ";
 
                 await _emailSender.SendEmailAsync(user.Email, subject, body, true);
@@ -363,10 +366,11 @@ namespace NBSite.Controllers
             };
 
             // Загружаем список городов для выпадающего списка
-            ViewBag.Cities = await _db.ReferencesCities
+            var cities = await _db.ReferencesCities
                 .Where(c => c.Active)
                 .OrderBy(c => c.Name)
                 .ToListAsync();
+            ViewBag.Cities = new SelectList(cities, "Id", "Name");
 
             return View(model);
         }
@@ -423,10 +427,11 @@ namespace NBSite.Controllers
             await Authenticate(user);
 
             ViewBag.SuccessMessage = "Профиль успешно обновлен";
-            ViewBag.Cities = await _db.ReferencesCities
+            var cities = await _db.ReferencesCities
                 .Where(c => c.Active)
                 .OrderBy(c => c.Name)
                 .ToListAsync();
+            ViewBag.Cities = new SelectList(cities, "Id", "Name");
 
             return View(model);
         }

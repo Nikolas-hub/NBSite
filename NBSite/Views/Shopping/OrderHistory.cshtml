@@ -3,51 +3,70 @@
     ViewData["Title"] = "История заказов";
 }
 
-<h1>@ViewData["Title"]</h1>
+<!-- Основной контейнер: ограничивает ширину, добавляет отступы по бокам и сверху -->
+<div class="container mt-4">
 
-@if (Model.Orders!.Any())
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>№ заказа</th>
-                <th>Дата</th>
-                <th>Статус</th>
-                <th>Сумма</th>
-                <th>Товаров</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var order in Model.Orders!)
-            {
-                <tr>
-                    <td>@order.Id</td>
-                    <td>@order.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
-                    <td>@order.Status</td>
-                    <td>@order.Total.ToString("C")</td>
-                    <td>@order.ItemsCount</td>
-                    <td><a asp-action="OrderConfirmation" asp-route-orderId="@order.Id">Детали</a></td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <h1 class="mb-4">@ViewData["Title"]</h1>
 
-    if (Model.TotalPages > 1)
+    @if (Model.Orders!.Any())
     {
-        <nav>
-            <ul class="pagination">
-                @for (int i = 1; i <= Model.TotalPages; i++)
-                {
-                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                        <a class="page-link" asp-action="OrderHistory" asp-route-page="@i">@i</a>
-                    </li>
-                }
-            </ul>
-        </nav>
+        <!-- Оборачиваем таблицу в адаптивный блок для горизонтального скролла на мобильных -->
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>№ заказа</th>
+                        <th>Дата</th>
+                        <th>Статус</th>
+                        <th>Сумма</th>
+                        <th>Товаров</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var order in Model.Orders!)
+                    {
+                        <tr>
+                            <td><strong>@order.Id</strong></td>
+                            <td>@order.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                            <td>
+                                <!-- Используем badge для наглядного отображения статуса (цвет можно настроить под свои статусы) -->
+                                <span class="badge bg-secondary">@order.Status</span>
+                            </td>
+                            <td class="fw-bold text-nowrap">@order.Total.ToString("C")</td>
+                            <td>@order.ItemsCount</td>
+                            <td>
+                                <a asp-action="OrderConfirmation" asp-route-orderId="@order.Id" class="btn btn-sm btn-outline-primary">
+                                    Детали
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        @if (Model.TotalPages > 1)
+        {
+            <!-- Пагинация: центрируем и добавляем отступ сверху -->
+            <nav class="mt-4 d-flex justify-content-center">
+                <ul class="pagination">
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" asp-action="OrderHistory" asp-route-page="@i">@i</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        }
     }
-}
-else
-{
-    <p>У вас пока нет заказов.</p>
-}
+    else
+    {
+        <!-- Сообщение об отсутствии заказов оформляем как информационный блок -->
+        <div class="alert alert-info" role="alert">
+            У вас пока нет заказов.
+        </div>
+    }
+
+</div>

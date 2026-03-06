@@ -4,7 +4,6 @@ namespace NBSite.Models.ViewComponents
 {
     public class RegisterViewModel
     {
-        // существующие свойства
         [Required(ErrorMessage = "Имя обязательно")]
         [Display(Name = "Имя")]
         public required string FirstName { get; set; }
