@@ -397,6 +397,44 @@
             },
             "Patterns": null
           },
+          "Licenses": {
+            "Children": {
+              "f1.jpg": {
+                "Children": null,
+                "Asset": {
+                  "ContentRootIndex": 0,
+                  "SubPath": "img/Licenses/f1.jpg"
+                },
+                "Patterns": null
+              },
+              "f2.jpg": {
+                "Children": null,
+                "Asset": {
+                  "ContentRootIndex": 0,
+                  "SubPath": "img/Licenses/f2.jpg"
+                },
+                "Patterns": null
+              },
+              "f5.jpg": {
+                "Children": null,
+                "Asset": {
+                  "ContentRootIndex": 0,
+                  "SubPath": "img/Licenses/f5.jpg"
+                },
+                "Patterns": null
+              },
+              "f6.jpg": {
+                "Children": null,
+                "Asset": {
+                  "ContentRootIndex": 0,
+                  "SubPath": "img/Licenses/f6.jpg"
+                },
+                "Patterns": null
+              }
+            },
+            "Asset": null,
+            "Patterns": null
+          },
           "logo": {
             "Children": {
               "logo_2026.png": {

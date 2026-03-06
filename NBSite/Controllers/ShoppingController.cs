@@ -502,10 +502,10 @@ namespace NBSite.Controllers
         {
             await LoadMenuCategories();
 
-            // Получаем корзину – всегда существует (создаётся при необходимости)
+            // Получаем корзину
             var cart = await GetOrCreateCartAsync();
 
-            // Загружаем доступные способы доставки и оплаты
+            // Загружаем справочники
             var deliveries = await _db.CatalogDeliveries
                 .OrderBy(d => d.Sort)
                 .ThenBy(d => d.Name)
@@ -527,15 +527,31 @@ namespace NBSite.Controllers
                 Payments = payments,
                 Cities = cities
             };
+
+            // Если пользователь авторизован – заполняем контактные данные
             if (User.Identity?.IsAuthenticated == true)
             {
                 var profile = await GetUserProfileAsync();
                 if (profile != null)
                 {
-                    ViewBag.UserPhone = profile.Phone;
-                    ViewBag.UserName = profile.Fio;
-                    ViewBag.UserEmail = profile.Email ?? User.FindFirstValue(ClaimTypes.Email);
+                    model.Name = profile.Fio ?? string.Empty;
+                    model.Email = profile.Email ?? User.FindFirstValue(ClaimTypes.Email) ?? string.Empty;
+                    model.Phone = profile.Phone ?? string.Empty;
                 }
+                else
+                {
+                    // Если профиль не найден, используем claims (например, email)
+                    model.Name = string.Empty;
+                    model.Email = User.FindFirstValue(ClaimTypes.Email) ?? string.Empty;
+                    model.Phone = string.Empty;
+                }
+            }
+            else
+            {
+                // Для неавторизованных оставляем поля пустыми (форма не будет показана)
+                model.Name = string.Empty;
+                model.Email = string.Empty;
+                model.Phone = string.Empty;
             }
 
             return View(model);
@@ -691,19 +707,19 @@ namespace NBSite.Controllers
                 cart.PaymentId = model.PaymentId;
                 cart.CityId = model.CityId;
 
-                // Если использован купон, деактивируем его
-                if (!string.IsNullOrEmpty(model.CouponCode))
-                {
-                    var coupon = await _db.CatalogCoupons
-                        .Include(c => c.Promo)
-                        .FirstOrDefaultAsync(c => c.Code == model.CouponCode && c.IsActive);
+                //// Если использован купон, деактивируем его
+                //if (!string.IsNullOrEmpty(model.CouponCode))
+                //{
+                //    var coupon = await _db.CatalogCoupons
+                //        .Include(c => c.Promo)
+                //        .FirstOrDefaultAsync(c => c.Code == model.CouponCode && c.IsActive);
 
-                    if (coupon != null)
-                    {
-                        cart.CouponId = coupon.Id;
-                        coupon.IsActive = false;
-                    }
-                }
+                //    if (coupon != null)
+                //    {
+                //        cart.CouponId = coupon.Id;
+                //        coupon.IsActive = false;
+                //    }
+                //}
 
                 // Проверяем остатки и обновляем их
                 foreach (var item in cart.CatalogOrderproducts)

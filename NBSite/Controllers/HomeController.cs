@@ -305,6 +305,13 @@ namespace NBSite.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> Licenses()
+        {
+            await LoadMenuCategoriesAsync();
+            return View();
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Page(string alias)
         {
             if (string.IsNullOrEmpty(alias))

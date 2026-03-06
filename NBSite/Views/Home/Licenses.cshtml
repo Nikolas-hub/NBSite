@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Лицензии";
+}
+
+<h1>Наши лицензии</h1>
+
+<div class="licenses-grid">
+    <div class="license-item">
+        <img src="~/img/Licenses/f1.jpg" alt="Лицензия 1" loading="lazy">
+    </div>
+    <div class="license-item">
+        <img src="~/img/Licenses/f2.jpg" alt="Лицензия 2" loading="lazy">
+    </div>
+    <div class="license-item">
+        <img src="~/img/Licenses/f5.jpg" alt="Лицензия 3" loading="lazy">
+    </div>
+    <div class="license-item">
+        <img src="~/img/Licenses/f6.jpg" alt="Лицензия 4" loading="lazy">
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .licenses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 20px 0;
+            justify-items: center;
+        }
+
+        .license-item {
+            text-align: center;
+            width: 100%;
+        }
+
+            .license-item img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                transition: transform 0.2s ease;
+            }
+
+                .license-item img:hover {
+                    transform: scale(1.02);
+                }
+
+        /* Для очень больших экранов ограничим максимальную ширину изображений */
+        @@media (min-width: 1400px) {
+            .license-item img {
+                max-width: 500px;
+            }
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
+    </style>
+}

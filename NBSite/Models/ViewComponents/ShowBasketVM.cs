@@ -8,5 +8,9 @@ namespace NBSite.Models.ViewComponents
         public List<CatalogDelivery> Deliveries { get; set; } = new();
         public List<CatalogPayment> Payments { get; set; } = new();
         public List<ReferencesCity> Cities { get; set; } = new();
+
+        public string? Name { get; set; }
+        public string? Email { get; set; }
+        public string? Phone { get; set; }
     }
 }

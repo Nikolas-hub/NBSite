@@ -145,6 +145,10 @@ wwwroot\fonts\plaza-icon\plaza-icon.svg
 wwwroot\fonts\plaza-icon\plaza-icon.ttf
 wwwroot\fonts\plaza-icon\plaza-icon.woff
 wwwroot\fotolia_53352683_subscription_xxl-700x466.jpg
+wwwroot\img\Licenses\f1.jpg
+wwwroot\img\Licenses\f2.jpg
+wwwroot\img\Licenses\f5.jpg
+wwwroot\img\Licenses\f6.jpg
 wwwroot\img\favicon.ico
 wwwroot\img\logo\logo_2026.png
 wwwroot\img\no-image.png
