@@ -153,7 +153,7 @@
 
                                 <!-- Доставка -->
                                 <div class="mb-4">
-                                    <h6 class="mb-3">Способ доставки</h6>
+                                    <h6 class="mb-3">Способ доставки *</h6>
                                     @foreach (var delivery in Model.Deliveries.Where(c => c.Id != 2 && c.Id != 4)) //Исключаю доставку ПЭК и Деловые Линии. Оставил в БД,т.к. на них ссылаются старые заказы
                                     {
                                         <div class="form-check mb-2">
@@ -162,6 +162,7 @@
                                                    name="DeliveryId"
                                                    value="@delivery.Id"
                                                    id="delivery-@delivery.Id"
+                                                   required
                                                    @(Model.Cart.DeliveryId == delivery.Id ? "checked" : "")>
                                             <label class="form-check-label" for="delivery-@delivery.Id">
                                                 @delivery.Name
@@ -172,16 +173,24 @@
 
                                 <!-- Оплата -->
                                 <div class="mb-4">
-                                    <h6 class="mb-3">Способ оплаты</h6>
-                                    @foreach (var payment in Model.Payments.Where(c => c.Id == 4)) //Оставил только безналичный расчет
+                                    <h6 class="mb-3">Способ оплаты *</h6>
+
+                                    @{
+                                        var payments = Model.Payments.Where(c => c.Id == 4).ToList();
+                                    }
+
+                                    @for (int i = 0; i < payments.Count; i++)
                                     {
+                                        var payment = payments[i];
+
                                         <div class="form-check mb-2">
                                             <input class="form-check-input payment-option"
                                                    type="radio"
                                                    name="PaymentId"
                                                    value="@payment.Id"
                                                    id="payment-@payment.Id"
-                                                   @(Model.Cart.PaymentId == payment.Id ? "checked" : "")>
+                                                   @(Model.Cart.PaymentId == payment.Id || (Model.Cart.PaymentId == null && i == 0) ? "checked" : "")>
+
                                             <label class="form-check-label" for="payment-@payment.Id">
                                                 @payment.Name
                                             </label>
