@@ -684,7 +684,7 @@ namespace NBSite.Controllers
 
             try
             {
-                var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+                var userId = long.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
                 var cart = await _db.CatalogOrders
                     .Include(o => o.CatalogOrderproducts)

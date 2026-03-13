@@ -3,20 +3,40 @@
   "WorkspaceRootPath": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\nbsite.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\nbsite.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\views\\shopping\\showbasket.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\views\\shopping\\showbasket.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\wwwroot\\css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
-      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\wwwroot\\css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\controllers\\shoppingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\controllers\\shoppingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\views\\shopping\\orderhistory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\views\\shopping\\orderhistory.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\models\\viewcomponents\\categorymenuviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\models\\viewcomponents\\categorymenuviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\infrastructure\\categorymenuservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\infrastructure\\categorymenuservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\models\\categorymenudto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\models\\categorymenudto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\views\\shared\\headerpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\views\\shared\\headerpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\wwwroot\\css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\wwwroot\\css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\models\\viewcomponents\\showbasketvm.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -25,10 +45,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\views\\home\\licenses.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
       "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\views\\home\\licenses.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|solutionrelative:nbsite\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E6AFEC8E-7817-BD7C-5D80-06419A7BC1A7}|NBSite\\NBSite.csproj|c:\\users\\n.kleba\\source\\repos\\nbsite\\nbsite\\views\\shared\\footerpartial.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
@@ -42,35 +58,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 6,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "ShowBasket.cshtml",
-              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Shopping\\ShowBasket.cshtml",
-              "RelativeDocumentMoniker": "NBSite\\Views\\Shopping\\ShowBasket.cshtml",
-              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Shopping\\ShowBasket.cshtml",
-              "RelativeToolTip": "NBSite\\Views\\Shopping\\ShowBasket.cshtml",
-              "ViewState": "AgIAANEAAAAAAAAAAAAlwN4AAAAuAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-06T08:24:29.629Z",
-              "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "NBSite",
-              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\NBSite.csproj",
-              "RelativeDocumentMoniker": "NBSite\\NBSite.csproj",
-              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\NBSite.csproj*",
-              "RelativeToolTip": "NBSite\\NBSite.csproj*",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-03-06T11:54:23.7Z",
-              "EditorCaption": ""
-            },
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
@@ -78,6 +67,81 @@
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "OrderHistory.cshtml",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Shopping\\OrderHistory.cshtml",
+              "RelativeDocumentMoniker": "NBSite\\Views\\Shopping\\OrderHistory.cshtml",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Shopping\\OrderHistory.cshtml",
+              "RelativeToolTip": "NBSite\\Views\\Shopping\\OrderHistory.cshtml",
+              "ViewState": "AgIAABEAAAAAAAAAAAAAACsAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-13T05:24:44.338Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CategoryMenuViewComponent.cs",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Models\\ViewComponents\\CategoryMenuViewComponent.cs",
+              "RelativeDocumentMoniker": "NBSite\\Models\\ViewComponents\\CategoryMenuViewComponent.cs",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Models\\ViewComponents\\CategoryMenuViewComponent.cs",
+              "RelativeToolTip": "NBSite\\Models\\ViewComponents\\CategoryMenuViewComponent.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-10T08:51:04.021Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CategoryMenuService.cs",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Infrastructure\\CategoryMenuService.cs",
+              "RelativeDocumentMoniker": "NBSite\\Infrastructure\\CategoryMenuService.cs",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Infrastructure\\CategoryMenuService.cs",
+              "RelativeToolTip": "NBSite\\Infrastructure\\CategoryMenuService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAA6AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-10T08:49:58.169Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CategoryMenuDto.cs",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Models\\CategoryMenuDto.cs",
+              "RelativeDocumentMoniker": "NBSite\\Models\\CategoryMenuDto.cs",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Models\\CategoryMenuDto.cs",
+              "RelativeToolTip": "NBSite\\Models\\CategoryMenuDto.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAqwAoAAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-03-10T08:49:53.674Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "HeaderPartial.cshtml",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Shared\\HeaderPartial.cshtml",
+              "RelativeDocumentMoniker": "NBSite\\Views\\Shared\\HeaderPartial.cshtml",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Shared\\HeaderPartial.cshtml",
+              "RelativeToolTip": "NBSite\\Views\\Shared\\HeaderPartial.cshtml",
+              "ViewState": "AgIAANIAAAAAAAAAAAAAAO4AAABWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-10T04:42:44.281Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ShowBasket.cshtml",
+              "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Shopping\\ShowBasket.cshtml",
+              "RelativeDocumentMoniker": "NBSite\\Views\\Shopping\\ShowBasket.cshtml",
+              "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Shopping\\ShowBasket.cshtml",
+              "RelativeToolTip": "NBSite\\Views\\Shopping\\ShowBasket.cshtml",
+              "ViewState": "AgIAAHMAAAAAAAAAAAApwHsAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2026-03-06T08:24:29.629Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
               "Title": "style.css",
               "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\wwwroot\\css\\style.css",
               "RelativeDocumentMoniker": "NBSite\\wwwroot\\css\\style.css",
@@ -85,25 +149,24 @@
               "RelativeToolTip": "NBSite\\wwwroot\\css\\style.css",
               "ViewState": "AgIAAIsdAAAAAAAAAIAwwKEdAAAKAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
-              "WhenOpened": "2026-03-06T11:41:36.731Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-06T11:41:36.731Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "ShoppingController.cs",
               "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Controllers\\ShoppingController.cs",
               "RelativeDocumentMoniker": "NBSite\\Controllers\\ShoppingController.cs",
               "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Controllers\\ShoppingController.cs",
               "RelativeToolTip": "NBSite\\Controllers\\ShoppingController.cs",
-              "ViewState": "AgIAAHICAAAAAAAAAAAcwMsCAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAJQCAAAAAAAAAAAkwKUCAABAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-03-06T11:15:14.647Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 9,
               "Title": "ShowBasketVM.cs",
               "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Models\\ViewComponents\\ShowBasketVM.cs",
               "RelativeDocumentMoniker": "NBSite\\Models\\ViewComponents\\ShowBasketVM.cs",
@@ -111,12 +174,11 @@
               "RelativeToolTip": "NBSite\\Models\\ViewComponents\\ShowBasketVM.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-06T11:11:09.898Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-06T11:11:09.898Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 10,
               "Title": "Licenses.cshtml",
               "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Home\\Licenses.cshtml",
               "RelativeDocumentMoniker": "NBSite\\Views\\Home\\Licenses.cshtml",
@@ -124,12 +186,11 @@
               "RelativeToolTip": "NBSite\\Views\\Home\\Licenses.cshtml",
               "ViewState": "AgIAABsAAAAAAAAAAAAAACsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-06T10:56:42.567Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-06T10:56:42.567Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 11,
               "Title": "FooterPartial.cshtml",
               "DocumentMoniker": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Views\\Shared\\FooterPartial.cshtml",
               "RelativeDocumentMoniker": "NBSite\\Views\\Shared\\FooterPartial.cshtml",
@@ -137,8 +198,7 @@
               "RelativeToolTip": "NBSite\\Views\\Shared\\FooterPartial.cshtml",
               "ViewState": "AgIAAA8AAAAAAAAAAAAAAC0AAAA3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-03-06T10:23:11.202Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-06T10:23:11.202Z"
             },
             {
               "$type": "Document",
@@ -148,10 +208,9 @@
               "RelativeDocumentMoniker": "NBSite\\Controllers\\HomeController.cs",
               "ToolTip": "C:\\Users\\n.kleba\\source\\repos\\NBSite\\NBSite\\Controllers\\HomeController.cs",
               "RelativeToolTip": "NBSite\\Controllers\\HomeController.cs",
-              "ViewState": "AgIAABkBAAAAAAAAAAAhwC0BAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAACMAAAAAAAAAAAAAADgAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-03-06T10:24:32.383Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-03-06T10:24:32.383Z"
             }
           ]
         }
