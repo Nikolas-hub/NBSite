@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("NBSite")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+98403dcdddd844a67cb1ac96382478a3a16d592f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+452dd39bd02c8202e50082d333f2bc220c187989")]
 [assembly: System.Reflection.AssemblyProductAttribute("NBSite")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NBSite")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

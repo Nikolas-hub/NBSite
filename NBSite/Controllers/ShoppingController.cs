@@ -679,7 +679,15 @@ namespace NBSite.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("ShowBasket", model);
+                foreach (var error in ModelState)
+                {
+                    foreach (var subError in error.Value.Errors)
+                    {
+                        _logger.LogError($"Field: {error.Key}, Error: {subError.ErrorMessage}");
+                    }
+                }
+
+                return RedirectToAction("ShowBasket");
             }
 
             try
